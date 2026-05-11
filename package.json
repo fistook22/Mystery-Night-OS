@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "description": "Live AI-orchestrated mystery dinner experience platform",
   "scripts": {
-    "dev": "NODE_PATH=/opt/node22/lib/node_modules nodemon --exec 'ts-node --project tsconfig.json' src/server.ts",
-    "start": "NODE_PATH=/opt/node22/lib/node_modules ts-node --project tsconfig.json src/server.ts"
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon --exec ts-node src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=18"
   }
 }
