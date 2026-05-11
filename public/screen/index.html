@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -304,22 +304,22 @@
 <div id="idle-screen">
   <div class="idle-logo">
     Mystery Night
-    <span>Live Crime Thriller</span>
+    <span>טריללר פשע חי</span>
   </div>
   <div class="idle-line"></div>
-  <div class="idle-waiting">Waiting for host to begin</div>
+  <div class="idle-waiting">ממתין למארח להתחיל</div>
 </div>
 
 <!-- Event Display -->
 <div id="event-screen">
   <div class="news-ticker" id="news-ticker">
-    <span class="ticker-tag">LIVE</span>
-    <span class="ticker-text" id="ticker-text">Mystery Night — The Meridian Affair</span>
+    <span class="ticker-tag">שידור חי</span>
+    <span class="ticker-text" id="ticker-text">Mystery Night — פרשת מרידיאן</span>
   </div>
 
   <div class="event-body" id="event-body">
     <div class="live-timestamp" id="live-timestamp"></div>
-    <div class="event-type-label" id="event-type-label">BREAKING</div>
+    <div class="event-type-label" id="event-type-label">מבזק</div>
     <div class="event-title" id="event-title"></div>
     <div class="event-content" id="event-content"></div>
     <div class="corner-brand">Mystery Night OS</div>
@@ -328,22 +328,22 @@
 
 <!-- Ended -->
 <div id="ended-screen">
-  <div class="title">The Mystery is Solved.</div>
-  <div class="subtitle" id="ended-text">Check your WhatsApp for the full reveal and your detective score.</div>
+  <div class="title">התעלומה נפתרה.</div>
+  <div class="subtitle" id="ended-text">בדקו את הוואטסאפ שלכם לחשיפה המלאה ולציון הבלש שלכם.</div>
 </div>
 
 <!-- Paused overlay -->
 <div id="paused-overlay">
-  <div class="label">Evening Paused</div>
-  <div class="message">Short Break</div>
+  <div class="label">הערב הושהה</div>
+  <div class="message">הפסקה קצרה</div>
 </div>
 
 <!-- Call banner -->
 <div id="call-banner">
   <div class="call-icon">📞</div>
   <div class="call-text">
-    <div class="caller" id="call-caller">Unknown Number</div>
-    <div class="recipient" id="call-recipient">Incoming call…</div>
+    <div class="caller" id="call-caller">מספר לא מזוהה</div>
+    <div class="recipient" id="call-recipient">שיחה נכנסת…</div>
   </div>
 </div>
 
@@ -352,10 +352,10 @@
 
 <script>
 const TYPE_MAP = {
-  news:         { label: 'Breaking News', tag: 'LIVE', bg: 'news' },
-  announcement: { label: 'System Message', tag: 'ALERT', bg: 'announcement' },
-  audio:        { label: 'Leaked Audio', tag: 'LEAKED', bg: 'audio' },
-  video:        { label: 'Security Footage', tag: 'CCTV', bg: 'news' },
+  news:         { label: 'חדשות אחרונות', tag: 'שידור חי', bg: 'news' },
+  announcement: { label: 'הודעת מערכת', tag: 'התרעה', bg: 'announcement' },
+  audio:        { label: 'הקלטה דלופה', tag: 'דלוף', bg: 'audio' },
+  video:        { label: 'מצלמות אבטחה', tag: 'מצלמה', bg: 'news' },
 };
 
 let callBannerTimer = null;
@@ -419,7 +419,7 @@ function showEvent(evt) {
     document.getElementById('event-type-label').textContent = meta.label;
     document.getElementById('event-title').textContent = evt.title;
     document.getElementById('event-content').textContent = evt.body;
-    document.getElementById('live-timestamp').textContent = new Date().toLocaleTimeString('en-GB');
+    document.getElementById('live-timestamp').textContent = new Date().toLocaleTimeString('he-IL');
   });
 }
 
@@ -447,8 +447,8 @@ function showEnded() {
 
 function showCallBanner(callerName, recipientName) {
   const banner = document.getElementById('call-banner');
-  document.getElementById('call-caller').textContent = callerName || 'Unknown Number';
-  document.getElementById('call-recipient').textContent = `${recipientName} — your phone is ringing`;
+  document.getElementById('call-caller').textContent = callerName || 'מספר לא מזוהה';
+  document.getElementById('call-recipient').textContent = `${recipientName} — הטלפון שלך מצלצל`;
   banner.classList.add('visible');
 
   clearTimeout(callBannerTimer);
@@ -461,7 +461,7 @@ function showCallBanner(callerName, recipientName) {
 setInterval(() => {
   const el = document.getElementById('live-timestamp');
   if (el && document.getElementById('event-screen').style.display !== 'none') {
-    el.textContent = new Date().toLocaleTimeString('en-GB');
+    el.textContent = new Date().toLocaleTimeString('he-IL');
   }
 }, 1000);
 

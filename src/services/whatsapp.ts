@@ -97,7 +97,7 @@ export function parseInboundMessage(body: unknown): { from: string; text: string
 }
 
 export async function sendOnboardingMessage(phone: string, characterName: string, characterRole: string): Promise<void> {
-  const greeting = `🕵️ *Mystery Night — Confidential Briefing*\n\nYou have been selected to play *${characterName}*, ${characterRole}.\n\nYour full briefing will arrive in 24 hours. Until then — trust no one.\n\nReply YES to confirm your participation and receive your character file.`;
+  const greeting = `🕵️ *Mystery Night — סודי בלבד*\n\nנבחרת לגלם את הדמות *${characterName}*, ${characterRole}.\n\nתקציר מלא יגיע אליך בעוד 24 שעות. עד אז — אל תסמוך על אף אחד.\n\nענה *כן* כדי לאשר את השתתפותך ולקבל את קובץ הדמות שלך.`;
   await sendTextMessage({ to: phone, body: greeting });
 }
 
@@ -108,17 +108,17 @@ export async function sendCharacterBriefing(phone: string, character: {
   alibi: string;
   instructions: string;
 }): Promise<void> {
-  const briefing = `📁 *YOUR CHARACTER FILE — CONFIDENTIAL*\n\n*Name:* ${character.name}\n*Role:* ${character.role}\n\n*Your motive (known only to you):*\n${character.motive}\n\n*Your alibi:*\n${character.alibi}\n\n*Your instructions:*\n${character.instructions}\n\n---\nThis message will not be repeated. The evening begins when your host presses Start. Stay in character.`;
+  const briefing = `📁 *קובץ הדמות שלך — סודי*\n\n*שם:* ${character.name}\n*תפקיד:* ${character.role}\n\n*המניע שלך (ידוע לך בלבד):*\n${character.motive}\n\n*האליבי שלך:*\n${character.alibi}\n\n*ההוראות שלך:*\n${character.instructions}\n\n---\nהמסר הזה לא יישלח שנית. הערב מתחיל כשהמארח לוחץ על התחל. הישאר בדמות.`;
   await sendTextMessage({ to: phone, body: briefing });
 }
 
 export async function sendBuzzMessage(phone: string, message: string): Promise<void> {
-  const buzz = `🔔 *PRIVATE MESSAGE — FOR YOUR EYES ONLY*\n\n${message}\n\n_Delete this after reading._`;
+  const buzz = `🔔 *הודעה פרטית — לעיניך בלבד*\n\n${message}\n\n_מחק לאחר קריאה._`;
   await sendTextMessage({ to: phone, body: buzz });
 }
 
 export async function sendRevealMessage(phone: string, revealText: string): Promise<void> {
-  await sendTextMessage({ to: phone, body: `🎭 *THE MYSTERY IS SOLVED*\n\n${revealText}` });
+  await sendTextMessage({ to: phone, body: `🎭 *התעלומה נפתרה*\n\n${revealText}` });
 }
 
 export { WHATSAPP_VERIFY_TOKEN };

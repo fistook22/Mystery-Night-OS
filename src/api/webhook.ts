@@ -37,13 +37,13 @@ export async function handleWhatsAppWebhook(
       stateManager.updateGuestOnboarding(from, true);
       await sendTextMessage({
         to: from,
-        body: "✅ Confirmed. Your character file arrives in 24 hours. Stay alert. — M",
+        body: "✅ אושר. קובץ הדמות שלך מגיע בעוד 24 שעות. הישאר ערני. — מ",
       });
     } else if (upperText === "NO" || upperText === "לא") {
       stateManager.updateGuestOnboarding(from, false);
       await sendTextMessage({
         to: from,
-        body: "Understood. You will not receive further messages from this number.",
+        body: "מובן. לא תקבל הודעות נוספות ממספר זה.",
       });
     } else {
       // Log inbound for host visibility

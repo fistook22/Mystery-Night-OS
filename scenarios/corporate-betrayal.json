@@ -1,117 +1,117 @@
 {
   "id": "corporate-betrayal",
-  "title": "The Meridian Affair",
-  "genre": "Corporate Thriller",
+  "title": "פרשת מרידיאן",
+  "genre": "טריללר תאגידי",
   "minPlayers": 6,
   "maxPlayers": 8,
   "difficulty": "medium",
   "durationMinutes": 100,
-  "synopsis": "The CEO of Meridian Tech has been found dead in his penthouse office, hours before a landmark IPO. Forty million dollars of investor funds have vanished. Everyone around the table had motive. Only one of you did it.",
+  "synopsis": "המנכ\"ל של מרידיאן טק נמצא מת במשרדו בקומה ה-32, שעות ספורות לפני הנפקה היסטורית. ארבעים מיליון שקל של כספי משקיעים נעלמו. לכולם היה מניע. רק אחד מכם עשה זאת.",
 
   "characters": [
     {
       "id": "cfo",
-      "name": "Dana Reeves",
-      "role": "Chief Financial Officer",
-      "motive": "Victor discovered Dana had been siphoning funds into a secret account in Cyprus for 18 months. A private audit was scheduled for Monday.",
-      "alibi": "Claims to have been on a 9pm call with the Singapore office. Phone records show the call lasted 4 minutes, not the 90 minutes claimed.",
+      "name": "דנה ריבס",
+      "role": "מנהלת כספים ראשית",
+      "motive": "ויקטור גילה שדנה מעלימה כספים לחשבון סודי בקפריסין כבר 18 חודשים. ביקורת פנימית הייתה מתוכננת ליום שני.",
+      "alibi": "טוענת שהייתה בשיחת וידאו עם משרד סינגפור בשעה 21:00. רשומות הטלפון מראות שהשיחה נמשכה 4 דקות — לא 90 דקות כפי שטענה.",
       "secrets": [
-        "The Cyprus account holds ₪2.3M taken from R&D budgets",
-        "Dana forged Victor's signature on three wire transfers",
-        "Dana has a second phone registered under a fake name"
+        "החשבון בקפריסין מכיל 2.3 מיליון ש\"ח שנלקחו מתקציבי מו\"פ",
+        "דנה זייפה את חתימת ויקטור על שלושה העברות בנקאיות",
+        "יש לה טלפון שני רשום תחת שם בדוי"
       ],
-      "instructions": "You are nervous but hiding it well. Deflect questions about the Singapore call. Mention repeatedly how much you trusted Victor."
+      "instructions": "את עצבנית אבל מסתירה את זה טוב. הסיטי את השאלות לגבי שיחת סינגפור. ציין שוב ושוב כמה סמכת על ויקטור."
     },
     {
       "id": "cto",
-      "name": "Eli Stern",
-      "role": "Chief Technology Officer",
-      "motive": "Victor was selling the company's core algorithm patent to a Chinese competitor — Eli's life's work — without his knowledge or consent.",
-      "alibi": "Was in the server room at the time, visible on CCTV. Solid alibi.",
+      "name": "אלי שטרן",
+      "role": "מנהל טכנולוגיה ראשי",
+      "motive": "ויקטור מכר את פטנט האלגוריתם המרכזי של החברה למתחרה סינית — יצירת חייו של אלי — מבלי לדעת.",
+      "alibi": "היה בחדר השרתים בזמן הרלוונטי, גלוי במצלמות האבטחה. עדות מוצקה.",
       "secrets": [
-        "Eli knew about the patent sale three weeks ago",
-        "Eli tried to bribe the acquirer to walk away",
-        "Eli copied the full codebase to a personal drive last Tuesday"
+        "אלי ידע על מכירת הפטנט שלושה שבועות לפני האירוע",
+        "ניסה לשחד את הרוכש לסגת מהעסקה",
+        "העתיק את כל קוד המקור לדיסק אישי ביום שלישי שעבר"
       ],
-      "instructions": "You have a real alibi and you know it. Be calm, almost too calm. Drop hints that you knew something was very wrong with the IPO."
+      "instructions": "יש לך עדות מוצקה ואתה יודע את זה. היה רגוע, אולי יותר מדי רגוע. זרוק רמזים שידעת שמשהו עמוק לא בסדר בהנפקה."
     },
     {
       "id": "lawyer",
-      "name": "Sophie Katz",
-      "role": "Corporate Counsel",
-      "motive": "Victor had discovered Sophie was leaking deal terms to a rival firm in exchange for a future partnership offer.",
-      "alibi": "Claims to have been at a charity gala. Two witnesses confirm she was there — but she left early, at 9:30pm.",
+      "name": "שופי כץ",
+      "role": "יועצת משפטית",
+      "motive": "ויקטור גילה שסופי מדליפה פרטי עסקאות לחברה מתחרה תמורת הצעת שותפות עתידית.",
+      "alibi": "טוענת שהייתה בערב גאלה לצדקה. שני עדים מאשרים שהייתה שם — אבל עזבה מוקדם, בשעה 21:30.",
       "secrets": [
-        "Sophie received ₪80,000 in a personal account from the rival firm",
-        "She drafted a document that would have implicated herself if signed",
-        "She destroyed a USB drive the morning after Victor's death"
+        "קיבלה 80,000 ש\"ח בחשבון אישי מהחברה המתחרה",
+        "ניסחה מסמך שהיה מפליל אותה אילו נחתם",
+        "השמידה כונן USB בבוקר שלאחר מות ויקטור"
       ],
-      "instructions": "You are polished and in control. Use legal language to deflect. Never say anything that commits you to a timeline."
+      "instructions": "את מלוטשת ושולטת בעצמך. השתמשי בשפה משפטית כדי להתחמק. לעולם אל תגידי משהו שמחייב אותך לציר זמן מסוים."
     },
     {
       "id": "assistant",
-      "name": "Marco Vidal",
-      "role": "Executive Assistant",
-      "motive": "Victor promised Marco a VP promotion for two years. The IPO prospectus, which Marco proofread, listed his title as 'Senior Coordinator' permanently.",
-      "alibi": "Was in the building late, claims he was preparing IPO materials. The security log shows he badged into the executive floor at 9:47pm.",
+      "name": "מרקו וידאל",
+      "role": "עוזר אישי של המנכ\"ל",
+      "motive": "ויקטור הבטיח למרקו קידום לסמנכ\"ל שנתיים ברציפות. תשקיף ההנפקה שמרקו עצמו הגיה הציג את תפקידו כ\"רכז בכיר\" לצמיתות.",
+      "alibi": "היה בבניין עד מאוחר, טוען שהכין חומרים להנפקה. יומן הכניסות מראה שבדק כרטיס כניסה לקומת ההנהלה בשעה 21:47.",
       "secrets": [
-        "Marco has a copy of Victor's personal calendar",
-        "Marco overheard the conversation between Victor and Dana two weeks ago",
-        "Marco was approached by a journalist before Victor died"
+        "יש לו עותק של יומן הפגישות האישי של ויקטור",
+        "האזין לשיחה בין ויקטור לדנה לפני שבועיים",
+        "עיתונאי פנה אליו לפני מות ויקטור"
       ],
-      "instructions": "You are eager to help with the investigation. You know more than you let on. Drop breadcrumbs. You didn't kill anyone but you're terrified of what you might have caused."
+      "instructions": "אתה להוט לעזור בחקירה. אתה יודע יותר ממה שאתה מגלה. זרוק פירורים. לא הרגת אף אחד — אבל אתה מפחד ממה שאולי גרמת."
     },
     {
       "id": "investor",
-      "name": "Rachel Bloom",
-      "role": "Lead Investor",
-      "motive": "Victor had told Rachel privately the IPO would be delayed. She had already committed her fund's capital and would face personal ruin if the deal collapsed.",
-      "alibi": "Was at a dinner with three other investors at a restaurant downtown. Left at 10:15pm.",
+      "name": "רחל בלום",
+      "role": "משקיעת עופרת",
+      "motive": "ויקטור אמר לרחל בצנעה שההנפקה תתעכב. היא כבר התחייבה להון הקרן שלה וניצבת בפני הרס אישי אם העסקה תקרוס.",
+      "alibi": "הייתה בארוחת ערב עם שלושה משקיעים אחרים במסעדה במרכז. עזבה בשעה 22:15.",
       "secrets": [
-        "Rachel knew the IPO numbers were inflated",
-        "She transferred ₪4M of investor capital against fund rules",
-        "She has a personal relationship with a member of the board"
+        "רחל ידעה שמספרי ההנפקה מנופחים",
+        "העבירה 4 מיליון ש\"ח של הון משקיעים בניגוד לתקנון הקרן",
+        "יש לה קשר אישי עם אחד מחברי הדירקטוריון"
       ],
-      "instructions": "You are aggressive and impatient. Money is the only language you speak. Push other players to account for their whereabouts."
+      "instructions": "את אגרסיבית וחסרת סבלנות. כסף הוא השפה היחידה שאת מדברת. דחפי אחרים לתת דין וחשבון על מה שעשו."
     },
     {
       "id": "board_member",
-      "name": "Thomas Vance",
-      "role": "Board Member",
-      "motive": "Victor was about to expose Thomas for taking kickbacks from a vendor for the past three years.",
-      "alibi": "No alibi. Claims he was home alone. No digital footprint after 8pm.",
+      "name": "תומס ונס",
+      "role": "חבר דירקטוריון",
+      "motive": "ויקטור עמד לחשוף שתומס לקח עמלות שוחד מספק במשך שלוש שנים.",
+      "alibi": "אין עדות. טוען שהיה בבית לבד. אין עקבות דיגיטליים לאחר שעה 20:00.",
       "secrets": [
-        "Thomas received ₪600,000 in vendor kickbacks over three years",
-        "Victor sent Thomas a message at 9:12pm — Thomas never replied",
-        "Thomas hired a private investigator to follow Victor six months ago"
+        "קיבל 600,000 ש\"ח עמלות שוחד לאורך שלוש שנים",
+        "ויקטור שלח לו הודעה בשעה 21:12 — תומס לא ענה לעולם",
+        "שכר חוקר פרטי לעקוב אחרי ויקטור לפני שישה חודשים"
       ],
-      "instructions": "You are old-money composed. Never raise your voice. When cornered, pivot to procedure and process. You are the murderer. Do not confess unless the evidence is ironclad."
+      "instructions": "אתה רגוע כמו ישיש אצולה. לעולם אל תרים את הקול. כשקורנסים אותך, עבור לפרוצדורות ותהליכים. אתה הרוצח. אל תתוודה אלא אם הראיות הן חותכות לחלוטין."
     },
     {
       "id": "pr_director",
-      "name": "Noa Ben-David",
-      "role": "PR Director",
-      "motive": "Victor was planning to fire Noa and replace her with a younger hire, blaming her for a damaging press leak last quarter.",
-      "alibi": "Was at a media event until 11pm. Multiple photographers confirm.",
+      "name": "נועה בן-דוד",
+      "role": "מנהלת יחסי ציבור",
+      "motive": "ויקטור תכנן לפטר את נועה ולהחליפה בגורם צעיר יותר, תוך שהוא מאשים אותה בדליפת עיתונות מזיקה ברבעון הקודם.",
+      "alibi": "הייתה באירוע תקשורתי עד 23:00. כמה צלמים מאשרים.",
       "secrets": [
-        "Noa was the source of the press leak — it was intentional",
-        "She was offered a job at the rival firm three days ago",
-        "She has a threatening voicemail from Victor on her phone"
+        "נועה הייתה מקור הדליפה — זה היה מכוון",
+        "קיבלה הצעת עבודה מהחברה המתחרה לפני שלושה ימים",
+        "יש לה הודעה קולית מאיימת מויקטור בטלפון שלה"
       ],
-      "instructions": "You are media-trained and charming. Spin everything. Your instinct is to control the narrative. You are secretly relieved Victor is dead."
+      "instructions": "את מאומנת לתקשורת וקסומה. סובבי הכל. האינסטינקט שלך הוא לשלוט בנרטיב. בסתר את מרגישה הקלה שויקטור מת."
     },
     {
       "id": "head_of_sales",
-      "name": "Jake Peretz",
-      "role": "Head of Sales",
-      "motive": "Victor had discovered Jake had fabricated ₪8M in pipeline to inflate the IPO valuation. Criminal fraud charges were possible.",
-      "alibi": "Was on a flight back from London, landed at 10:40pm. Confirmed by airline records.",
+      "name": "ג'ייק פרץ",
+      "role": "סמנכ\"ל מכירות",
+      "motive": "ויקטור גילה שג'ייק בידה 8 מיליון ש\"ח של צבר עסקאות כדי לנפח את שווי ההנפקה. עמדו בפניו אישומים פליליים.",
+      "alibi": "היה בטיסה חזרה מלונדון, נחת בשעה 22:40. מאושר על ידי רשומות חברת התעופה.",
       "secrets": [
-        "The pipeline fabrication was done with CFO Dana's knowledge",
-        "Jake met with Victor two days before his death",
-        "Jake has a burner phone with deleted messages"
+        "הבידוי נעשה בידיעת דנה ריבס",
+        "נפגש עם ויקטור יומיים לפני מותו",
+        "יש לו טלפון נוסף עם הודעות שנמחקו"
       ],
-      "instructions": "You are confident and charming. Use humor to deflect. You know about the Cyprus account — use that as a weapon if you feel cornered."
+      "instructions": "אתה בטוח בעצמך ושובה לב. השתמש בהומור כדי להתחמק. אתה יודע על החשבון בקפריסין — השתמש בזה כנשק אם קורנסים אותך."
     }
   ],
 
@@ -119,34 +119,34 @@
     {
       "id": "evt_welcome",
       "order": 0,
-      "label": "Welcome & Scene Setting",
+      "label": "פתיחה והצבת הסצנה",
       "channels": ["screen"],
       "screenEvent": {
         "type": "announcement",
-        "title": "BREAKING: Meridian Tech CEO Found Dead",
-        "body": "Victor Harel, 54, CEO of Meridian Technologies, was discovered unresponsive in his 32nd-floor office at 11:45pm last night. An IPO valuation of ₪400 million was set for 9am this morning. All senior executives have been asked to remain on site pending investigation. This broadcast is being monitored."
+        "title": "מבזק: מנכ\"ל מרידיאן טק נמצא מת",
+        "body": "ויקטור הראל, בן 54, מנכ\"ל מרידיאן טכנולוגיות, נמצא ללא הכרה במשרדו בקומה ה-32 בשעה 23:45 אמש. הנפקה בשווי 400 מיליון ש\"ח הייתה מתוכננת לשעה 09:00 הבוקר. כל הבכירים התבקשו להישאר באתר עד להשלמת החקירה. שידור זה נמצא תחת מעקב."
       }
     },
     {
       "id": "evt_leaked_email",
       "order": 1,
-      "label": "Leaked Email Drops",
+      "label": "דליפת האימייל",
       "triggerAfterMinutes": 15,
       "channels": ["screen", "whatsapp"],
       "screenEvent": {
         "type": "news",
-        "title": "LEAKED: Internal Email Chain",
-        "body": "An anonymous source has forwarded the following email chain to our newsroom. FROM: v.harel@meridian.com TO: t.vance@meridian.com — 'Thomas, this cannot continue. I know about the Arkana payments. Meet me tonight at 9pm or I go to the board in the morning. — V'"
+        "title": "דלף: שרשרת אימיילים פנימית",
+        "body": "מקור אנונימי העביר את שרשרת האימיילים הבאה לחדר החדשות שלנו. מאת: v.harel@meridian.com | אל: t.vance@meridian.com — \"תומס, זה לא יכול להמשיך. אני יודע על תשלומי ארקנה. פגוש אותי הלילה בשעה 21:00 או שאני הולך לדירקטוריון בבוקר. — ו\""
       },
       "buzzEvents": [
         {
           "characterId": "board_member",
-          "message": "The email is real. You never showed up at 9pm. You went to the office instead. Stay calm — nobody can prove what happened after you arrived.",
+          "message": "האימייל אמיתי. לא הגעת לפגישה בשעה 21:00. במקום זאת, הלכת למשרד. תישאר רגוע — אף אחד לא יכול להוכיח מה קרה אחרי שהגעת.",
           "isSecret": true
         },
         {
           "characterId": "cfo",
-          "message": "You saw this email two days ago. Victor showed you as leverage against Thomas. You weren't the only target.",
+          "message": "ראית את האימייל הזה לפני יומיים. ויקטור הראה לך אותו כקלף לחץ נגד תומס. לא היית המטרה היחידה שלו.",
           "isSecret": true
         }
       ]
@@ -154,47 +154,47 @@
     {
       "id": "evt_security_footage",
       "order": 2,
-      "label": "Security Footage Reveal",
+      "label": "חשיפת צילומי האבטחה",
       "triggerAfterMinutes": 30,
       "channels": ["screen"],
       "screenEvent": {
         "type": "video",
-        "title": "CCTV: Executive Floor, 9:53pm",
-        "body": "Security footage from the 32nd floor shows an unidentified figure in a dark coat entering the stairwell at 9:53pm — seven minutes after Thomas Vance's building access log shows him badging in at street level. The elevator camera malfunctioned between 9:48pm and 10:14pm. Maintenance records show no prior fault."
+        "title": "מצלמות אבטחה: קומת ההנהלה, 21:53",
+        "body": "צילומי אבטחה מקומה ה-32 מראים דמות לא מזוהה במעיל כהה הנכנסת למדרגות בשעה 21:53 — שבע דקות לאחר שיומן הכניסות של תומס ונס מראה כניסה ברמת הרחוב בשעה 21:46. מצלמת המעלית תקלה בין השעות 21:48 ל-22:14. רשומות תחזוקה לא מצביעות על תקלה קודמת."
       }
     },
     {
       "id": "evt_ai_call",
       "order": 3,
-      "label": "The Anonymous Call",
+      "label": "השיחה האנונימית",
       "triggerAfterMinutes": 45,
       "channels": ["call"],
       "callEvent": {
         "characterId": "board_member",
-        "callerName": "Unknown Number",
-        "script": "You answer the phone. A distorted voice speaks: 'You were seen leaving the building at 10:22pm. The CCTV hard drive was wiped remotely from inside the server room. Someone is covering for you. Or covering themselves. Either way — the morning audit will find the Arkana account. You have until dessert to decide who you're protecting.' The line goes dead."
+        "callerName": "מספר לא מזוהה",
+        "script": "אתה עונה לטלפון. קול מעוות מדבר: ראו אותך עוזב את הבניין בשעה 22:22. הדיסק הקשיח של מצלמות האבטחה נמחק מרחוק מתוך חדר השרתים. מישהו מכסה עליך. או שמכסה על עצמו. בכל מקרה — הביקורת של הבוקר תמצא את חשבון ארקנה. יש לך עד הקינוח להחליט על מי אתה מגן. הקו מת."
       }
     },
     {
       "id": "evt_forensic_report",
       "order": 4,
-      "label": "Forensic Report Fragment",
+      "label": "דוח המעבדה הפורנזית",
       "triggerAfterMinutes": 60,
       "channels": ["screen", "whatsapp"],
       "screenEvent": {
         "type": "news",
-        "title": "FORENSICS: Preliminary Cause of Death",
-        "body": "Preliminary forensic analysis indicates Victor Harel died from acute cardiac event consistent with a rapidly acting vasodilator compound. No signs of struggle. Time of death estimated between 9:45pm and 10:15pm. A prescription bottle matching the compound was found in a desk drawer — prescribed to a Meridian employee. Name redacted pending notification."
+        "title": "פורנזיקה: סיבת מוות ראשונית",
+        "body": "ניתוח פורנזי ראשוני מצביע על כך שויקטור הראל מת מאירוע לבבי בעקבות חומר מרחיב כלי דם בעל פעולה מהירה. אין סימני מאבק. זמן המוות משוער בין 21:45 ל-22:15. בקבוק מרשם התואם את החומר נמצא במגירת שולחן העבודה — רשום על שם עובד מרידיאן. השם מצונזר עד להודעה רשמית."
       },
       "buzzEvents": [
         {
           "characterId": "board_member",
-          "message": "The prescription is yours. You filled it three weeks ago and left it in Victor's office during a meeting. You didn't plan this. You carried it with you that night because you were afraid. You used it when he threatened to call the police on the spot.",
+          "message": "המרשם שלך הוא. מילאת אותו לפני שלושה שבועות והשארת אותו במשרד של ויקטור בפגישה. לא תכננת את זה. נשאת אותו איתך אותו לילה כי פחדת. השתמשת בו כשאיים להתקשר למשטרה באופן מיידי.",
           "isSecret": true
         },
         {
           "characterId": "cfo",
-          "message": "You know the prescription is not yours. But you also know whose name is on it. Do you use this information now, or wait?",
+          "message": "אתה יודע שהמרשם הזה אינו שלך. אבל אתה גם יודע על מי הוא. האם אתה משתמש במידע הזה עכשיו — או ממתין?",
           "isSecret": true
         }
       ]
@@ -202,31 +202,31 @@
     {
       "id": "evt_accusation_round",
       "order": 5,
-      "label": "Open Accusation Round",
+      "label": "סבב האשמות",
       "triggerAfterMinutes": 75,
       "channels": ["screen"],
       "screenEvent": {
         "type": "announcement",
-        "title": "INVESTIGATION UPDATE",
-        "body": "Investigators have narrowed their focus. All present are asked to formally state their theory of events. Each person at the table must name one suspect and provide their reasoning. The investigation will proceed based on the collective accusation."
+        "title": "עדכון חקירה",
+        "body": "החוקרים צמצמו את המיקוד. כל הנוכחים מתבקשים להציג רשמית את גרסתם לאירועים. כל אחד ואחת חייבים לנקוב בשם חשוד אחד ולנמק. החקירה תתקדם על בסיס ההאשמה הקולקטיבית."
       }
     },
     {
       "id": "evt_reveal",
       "order": 6,
-      "label": "Resolution & Reveal",
+      "label": "הפתרון וחשיפת הרוצח",
       "channels": ["screen", "whatsapp"],
       "screenEvent": {
         "type": "announcement",
-        "title": "THE MERIDIAN VERDICT",
-        "body": "Based on the evidence presented, investigators have concluded the following..."
+        "title": "פסיקת מרידיאן",
+        "body": "על בסיס הראיות שהוצגו, החוקרים הגיעו למסקנות הבאות..."
       }
     }
   ],
 
   "resolution": {
     "murderer": "board_member",
-    "explanation": "Thomas Vance killed Victor Harel to prevent exposure of three years of vendor kickbacks worth ₪600,000. He arrived at the building at 9:48pm, took the stairs to avoid elevator cameras he knew were monitored, and administered a vasodilator compound from his own prescription during what appeared to be a confrontation. He remotely wiped the elevator CCTV from a terminal he had access to as a board member. He had the motive, the access, and the means.",
-    "revealScript": "Thomas Vance. Board member. Eleven years of service. The man who seconded every motion and seconded every expense. The prescription was filled under his name on April 3rd — three weeks before Victor's death. The Arkana account received its final payment on the same day. Victor gave him an ultimatum at 9pm. Thomas chose a different kind of resolution. The IPO would have buried him. Victor dying preserved a lie — for one more night."
+    "explanation": "תומס ונס הרג את ויקטור הראל כדי למנוע חשיפת שלוש שנים של עמלות שוחד בסך 600,000 ש\"ח. הגיע לבניין בשעה 21:46, עלה במדרגות כדי לעקוף את מצלמות המעלית שידע שמנוטרות, ומינן חומר מרחיב כלי דם ממרשמו האישי בעת עימות שנראה כפגישה רגילה. מחק מרחוק את קלטות המעלית מטרמינל שהיה לו גישה אליו כחבר דירקטוריון. היו לו המניע, הגישה, והאמצעים.",
+    "revealScript": "תומס ונס. חבר דירקטוריון. אחד עשר שנות שירות. האיש שהצביע בעד כל החלטה ואישר כל הוצאה. המרשם מולא על שמו ב-3 באפריל — שלושה שבועות לפני מות ויקטור. חשבון ארקנה קיבל את תשלומו האחרון באותו יום. ויקטור נתן לו אולטימטום בשעה 21:00. תומס בחר בפתרון אחר. ההנפקה הייתה קוברת אותו. מות ויקטור שימר שקר — ללילה אחד נוסף."
   }
 }
