@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mystery Night OS — Host Dashboard</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a26;
+      --border: #2a2a40;
+      --accent: #e63946;
+      --accent2: #f4a261;
+      --gold: #ffd60a;
+      --text: #e8e8f0;
+      --text-dim: #7a7a9a;
+      --green: #2ec4b6;
+      --red: #e63946;
+      --radius: 8px;
+      --font: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .logo {
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .status-pill {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .status-pill.idle     { background: #2a2a40; color: var(--text-dim); }
+    .status-pill.active   { background: #1a3a1a; color: var(--green); border: 1px solid var(--green); }
+    .status-pill.paused   { background: #3a2a10; color: var(--accent2); border: 1px solid var(--accent2); }
+    .status-pill.ended    { background: #3a1a1a; color: var(--red); border: 1px solid var(--red); }
+
+    /* ── Main layout ── */
+    main {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+      height: calc(100vh - 49px);
+    }
+
+    /* ── Setup Panel (shown before start) ── */
+    #setup-panel {
+      grid-column: 1 / -1;
+      padding: 32px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    #setup-panel h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    #setup-panel p {
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    select, input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--accent);
+    }
+
+    .guest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .guest-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .guest-row input, .guest-row select {
+      font-size: 12px;
+    }
+
+    .btn-remove {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-remove:hover { border-color: var(--red); color: var(--red); }
+
+    .btn-add-guest {
+      background: transparent;
+      border: 1px dashed var(--border);
+      color: var(--text-dim);
+      padding: 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 12px;
+      width: 100%;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .btn-add-guest:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #ff4757; }
+    .btn-primary:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; }
+
+    /* ── Live Panel ── */
+    #live-panel {
+      display: none;
+      grid-column: 1 / -1;
+      grid-template-columns: 300px 1fr;
+      height: 100%;
+    }
+
+    #live-panel.visible { display: grid; }
+
+    /* ── Left sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-section {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-section h3 {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    /* Controls */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-control {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .btn-next {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      font-size: 13px;
+      padding: 14px;
+    }
+    .btn-next:hover { background: #ff4757; }
+    .btn-next:disabled { background: var(--border); border-color: var(--border); color: var(--text-dim); cursor: not-allowed; }
+
+    .btn-wildcard {
+      background: #2a1a3a;
+      border-color: #6a3fa0;
+      color: #b48fdc;
+    }
+    .btn-wildcard:hover { border-color: #b48fdc; }
+
+    .btn-pause { }
+    .btn-pause:hover { border-color: var(--accent2); color: var(--accent2); }
+    .btn-pause.paused { border-color: var(--green); color: var(--green); }
+
+    /* Timeline */
+    .timeline-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      cursor: default;
+      transition: background 0.15s;
+    }
+
+    .timeline-item.completed { opacity: 0.45; }
+    .timeline-item.current { background: #1a1a30; }
+    .timeline-item.upcoming { opacity: 0.6; }
+
+    .tl-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .completed .tl-dot  { background: var(--text-dim); }
+    .current .tl-dot    { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .upcoming .tl-dot   { background: var(--border); }
+
+    .tl-label {
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .tl-index {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    /* Guest list sidebar */
+    .guest-status-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .guest-status-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--surface2);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .guest-name { font-size: 12px; }
+    .guest-char { font-size: 10px; color: var(--text-dim); }
+    .consent-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .consent-dot.yes { background: var(--green); }
+
+    /* ── Main content area ── */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      height: 3px;
+      background: var(--border);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.5s ease;
+    }
+
+    /* Event log */
+    .event-log-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .event-log-header h3 {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .event-log {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .log-entry {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 12px;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .log-time { font-size: 10px; color: var(--text-dim); padding-top: 2px; }
+
+    .log-body { }
+    .log-type {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .log-type.screen  { color: var(--accent); }
+    .log-type.buzz    { color: var(--accent2); }
+    .log-type.call    { color: var(--green); }
+    .log-type.state   { color: var(--text-dim); }
+    .log-type.wildcard { color: #b48fdc; }
+
+    .log-title { font-size: 13px; margin-bottom: 3px; }
+    .log-detail { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Current event banner */
+    .current-event-banner {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #0f0f1a;
+    }
+
+    .current-event-banner .label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .current-event-banner .title {
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .current-event-banner .meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Scenario info */
+    .scenario-badge {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .scenario-badge strong {
+      color: var(--text);
+    }
+
+    /* Notification toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 12px;
+      max-width: 300px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #toast.success { border-color: var(--green); }
+    #toast.error   { border-color: var(--red); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .elapsed {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mystery Night OS</div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span class="elapsed" id="elapsed">00:00</span>
+    <span class="status-pill idle" id="status-badge">IDLE</span>
+  </div>
+</header>
+
+<!-- Setup Panel -->
+<main>
+  <section id="setup-panel">
+    <h2>New Session</h2>
+    <p>Configure your mystery evening below. Guests will receive WhatsApp onboarding once you press Start.</p>
+
+    <div class="form-group">
+      <label>Scenario</label>
+      <select id="scenario-select">
+        <option value="">Loading scenarios…</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Host Phone (for updates)</label>
+      <input type="tel" id="host-phone" placeholder="+972501234567" />
+    </div>
+
+    <div class="form-group">
+      <label>Guests</label>
+      <div class="guest-list" id="guest-list"></div>
+      <button class="btn-add-guest" id="btn-add-guest">+ Add Guest</button>
+    </div>
+
+    <div style="display:flex;gap:12px;align-items:center;margin-top:8px;">
+      <button class="btn-primary" id="btn-start">START EVENING</button>
+      <span style="font-size:11px;color:var(--text-dim)">
+        Pressing Start fires the first event on the main screen and activates the timeline.
+      </span>
+    </div>
+  </section>
+
+  <!-- Live Panel -->
+  <div id="live-panel">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Controls -->
+      <div class="sidebar-section">
+        <h3>Controls</h3>
+        <div class="controls">
+          <button class="btn-control btn-next" id="btn-next">▶ NEXT EVENT</button>
+          <button class="btn-control btn-pause" id="btn-pause">⏸ PAUSE</button>
+          <button class="btn-control btn-wildcard" id="btn-wildcard">⚡ WILDCARD</button>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="sidebar-section" style="flex:1;display:flex;flex-direction:column;overflow:hidden;padding-bottom:0;">
+        <h3>Timeline</h3>
+        <div class="timeline-list" id="timeline-list"></div>
+      </div>
+
+      <!-- Guests -->
+      <div class="sidebar-section">
+        <h3>Guests</h3>
+        <div class="guest-status-list" id="guest-status-list"></div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+      </div>
+
+      <div class="current-event-banner" id="current-event-banner">
+        <div class="label">Current Event</div>
+        <div class="title" id="current-event-title">—</div>
+        <div class="meta" id="current-event-meta"></div>
+      </div>
+
+      <div class="event-log-header">
+        <h3>Event Log</h3>
+        <span class="scenario-badge" id="scenario-badge"></span>
+      </div>
+
+      <div class="event-log" id="event-log">
+        <div class="log-entry">
+          <div class="log-time">—</div>
+          <div class="log-body">
+            <div class="log-type state">System</div>
+            <div class="log-title">Session active. Waiting for first event.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let gameState = null;
+let scenario = null;
+let startTime = null;
+let elapsedTimer = null;
+let isPaused = false;
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+async function boot() {
+  await loadScenarios();
+  renderGuestList();
+  connectSSE();
+  checkExistingState();
+}
+
+async function checkExistingState() {
+  try {
+    const res = await fetch('/api/state');
+    const state = await res.json();
+    if (state && state.status && state.status !== 'idle') {
+      gameState = state;
+      switchToLivePanel();
+    }
+  } catch {}
+}
+
+// ── Scenarios ─────────────────────────────────────────────────────────────
+async function loadScenarios() {
+  try {
+    const res = await fetch('/api/scenarios');
+    const list = await res.json();
+    const sel = document.getElementById('scenario-select');
+    sel.innerHTML = list.map(s =>
+      `<option value="${s.id}">${s.title} (${s.genre}, ${s.minPlayers}–${s.maxPlayers} players)</option>`
+    ).join('');
+    if (list.length > 0) loadScenarioDetails(list[0].id);
+    sel.addEventListener('change', () => loadScenarioDetails(sel.value));
+  } catch (e) {
+    console.error('Failed to load scenarios:', e);
+  }
+}
+
+async function loadScenarioDetails(id) {
+  // We use the scenario data embedded in timeline for display
+}
+
+// ── Guest list builder ─────────────────────────────────────────────────────
+const DEFAULT_CHARACTERS = [
+  { id: 'cfo', label: 'Dana Reeves (CFO)' },
+  { id: 'cto', label: 'Eli Stern (CTO)' },
+  { id: 'lawyer', label: 'Sophie Katz (Lawyer)' },
+  { id: 'assistant', label: 'Marco Vidal (Assistant)' },
+  { id: 'investor', label: 'Rachel Bloom (Investor)' },
+  { id: 'board_member', label: 'Thomas Vance (Board)' },
+  { id: 'pr_director', label: 'Noa Ben-David (PR)' },
+  { id: 'head_of_sales', label: 'Jake Peretz (Sales)' },
+];
+
+let guests = [
+  { guestName: '', characterId: 'cfo', phone: '' },
+  { guestName: '', characterId: 'cto', phone: '' },
+  { guestName: '', characterId: 'lawyer', phone: '' },
+  { guestName: '', characterId: 'assistant', phone: '' },
+  { guestName: '', characterId: 'investor', phone: '' },
+  { guestName: '', characterId: 'board_member', phone: '' },
+];
+
+function renderGuestList() {
+  const container = document.getElementById('guest-list');
+  container.innerHTML = guests.map((g, i) => `
+    <div class="guest-row">
+      <input type="text" placeholder="Guest name" value="${g.guestName}"
+        oninput="guests[${i}].guestName = this.value" />
+      <select onchange="guests[${i}].characterId = this.value">
+        ${DEFAULT_CHARACTERS.map(c =>
+          `<option value="${c.id}" ${g.characterId === c.id ? 'selected' : ''}>${c.label}</option>`
+        ).join('')}
+      </select>
+      <input type="tel" placeholder="+972501234567" value="${g.phone}"
+        oninput="guests[${i}].phone = this.value" />
+      <button class="btn-remove" onclick="removeGuest(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeGuest(i) {
+  guests.splice(i, 1);
+  renderGuestList();
+}
+
+document.getElementById('btn-add-guest').addEventListener('click', () => {
+  const usedChars = guests.map(g => g.characterId);
+  const nextChar = DEFAULT_CHARACTERS.find(c => !usedChars.includes(c.id));
+  guests.push({ guestName: '', characterId: nextChar?.id ?? DEFAULT_CHARACTERS[0].id, phone: '' });
+  renderGuestList();
+});
+
+// ── Start ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', async () => {
+  const scenarioId = document.getElementById('scenario-select').value;
+  if (!scenarioId) { showToast('Select a scenario first', 'error'); return; }
+  if (guests.some(g => !g.guestName.trim())) { showToast('Enter all guest names', 'error'); return; }
+
+  const btn = document.getElementById('btn-start');
+  btn.disabled = true;
+  btn.textContent = 'STARTING…';
+
+  try {
+    const res = await fetch('/api/host/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        scenarioId,
+        guests,
+        hostPhone: document.getElementById('host-phone').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    gameState = data;
+    showToast('Evening started!', 'success');
+    switchToLivePanel();
+  } catch (e) {
+    showToast(e.message, 'error');
+    btn.disabled = false;
+    btn.textContent = 'START EVENING';
+  }
+});
+
+// ── Live panel ─────────────────────────────────────────────────────────────
+function switchToLivePanel() {
+  document.getElementById('setup-panel').style.display = 'none';
+  const lp = document.getElementById('live-panel');
+  lp.classList.add('visible');
+  startElapsedTimer();
+  renderGuestStatusList();
+  updateStatusBadge('active');
+}
+
+function startElapsedTimer() {
+  startTime = startTime || new Date();
+  elapsedTimer = setInterval(() => {
+    if (isPaused) return;
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    document.getElementById('elapsed').textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+function renderGuestStatusList() {
+  const container = document.getElementById('guest-status-list');
+  container.innerHTML = guests.map(g => `
+    <div class="guest-status-item">
+      <div>
+        <div class="guest-name">${g.guestName || '—'}</div>
+        <div class="guest-char">${DEFAULT_CHARACTERS.find(c => c.id === g.characterId)?.label ?? g.characterId}</div>
+      </div>
+      <div class="consent-dot" id="dot-${g.phone.replace(/\+/g, '')}"></div>
+    </div>
+  `).join('');
+}
+
+// ── Controls ───────────────────────────────────────────────────────────────
+document.getElementById('btn-next').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-next');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/host/next', { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    showToast(`Event ${data.index + 1}/${data.total}: ${data.label}`, 'success');
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    setTimeout(() => { btn.disabled = false; }, 1500);
+  }
+});
+
+document.getElementById('btn-pause').addEventListener('click', async () => {
+  const endpoint = isPaused ? '/api/host/resume' : '/api/host/pause';
+  try {
+    const res = await fetch(endpoint, { method: 'POST' });
+    if (!res.ok) return;
+    isPaused = !isPaused;
+    const btn = document.getElementById('btn-pause');
+    btn.textContent = isPaused ? '▶ RESUME' : '⏸ PAUSE';
+    btn.classList.toggle('paused', isPaused);
+    updateStatusBadge(isPaused ? 'paused' : 'active');
+    showToast(isPaused ? 'Evening paused' : 'Evening resumed');
+  } catch (e) { showToast(e.message, 'error'); }
+});
+
+document.getElementById('btn-wildcard').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-wildcard');
+  btn.disabled = true;
+  btn.textContent = '⚡ GENERATING…';
+  try {
+    const res = await fetch('/api/host/wildcard', { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    showToast('Wildcard fired!', 'success');
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = '⚡ WILDCARD';
+    }, 3000);
+  }
+});
+
+// ── SSE ────────────────────────────────────────────────────────────────────
+function connectSSE() {
+  const es = new EventSource('/api/events?role=host');
+
+  es.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      handleSSEMessage(msg);
+    } catch {}
+  };
+
+  es.onerror = () => {
+    setTimeout(connectSSE, 3000);
+  };
+}
+
+function handleSSEMessage(msg) {
+  const { type, payload, timestamp } = msg;
+
+  switch (type) {
+    case 'state':
+      if (payload) {
+        gameState = payload;
+        updateStatusBadge(payload.status);
+        if (payload.status === 'active' || payload.status === 'paused') {
+          // Already in live panel or need to switch
+        }
+      }
+      break;
+
+    case 'event_fired':
+      appendLogEntry({
+        type: 'screen',
+        time: formatTime(timestamp),
+        title: payload.label,
+        detail: payload.screenEvent?.body?.slice(0, 100) + '…',
+      });
+      updateCurrentEvent(payload.label, payload.screenEvent);
+      updateTimeline(payload.eventId);
+      break;
+
+    case 'buzz':
+      if (payload.type === 'inbound') {
+        appendLogEntry({
+          type: 'buzz',
+          time: formatTime(timestamp),
+          title: `Inbound from ${payload.from}`,
+          detail: payload.text,
+        });
+      } else {
+        appendLogEntry({
+          type: 'buzz',
+          time: formatTime(timestamp),
+          title: `Buzz → ${payload.guestName}`,
+          detail: payload.preview,
+        });
+      }
+      break;
+
+    case 'call':
+      appendLogEntry({
+        type: 'call',
+        time: formatTime(timestamp),
+        title: `Call → ${payload.guestName}`,
+        detail: `Caller: ${payload.callerName}`,
+      });
+      break;
+
+    case 'screen_update':
+      appendLogEntry({
+        type: 'screen',
+        time: formatTime(timestamp),
+        title: payload.title,
+        detail: payload.body?.slice(0, 100) + '…',
+      });
+      break;
+  }
+}
+
+function updateCurrentEvent(label, screenEvent) {
+  document.getElementById('current-event-title').textContent = label;
+  document.getElementById('current-event-meta').textContent =
+    screenEvent ? `${screenEvent.type.toUpperCase()} — ${screenEvent.title}` : '';
+}
+
+function updateTimeline(firedEventId) {
+  // Re-render timeline based on state
+  const items = document.querySelectorAll('.timeline-item');
+  items.forEach(item => {
+    if (item.dataset.eventId === firedEventId) {
+      item.classList.remove('upcoming', 'current');
+      item.classList.add('current');
+    }
+  });
+}
+
+function appendLogEntry({ type, time, title, detail }) {
+  const log = document.getElementById('event-log');
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML = `
+    <div class="log-time">${time}</div>
+    <div class="log-body">
+      <div class="log-type ${type}">${type.toUpperCase()}</div>
+      <div class="log-title">${escHtml(title)}</div>
+      ${detail ? `<div class="log-detail">${escHtml(detail)}</div>` : ''}
+    </div>
+  `;
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
+  updateProgress();
+}
+
+function updateProgress() {
+  if (!gameState) return;
+  // We'll calculate progress from event log entries
+  const log = document.getElementById('event-log');
+  const entries = log.querySelectorAll('.log-entry').length;
+  const total = 7; // timeline events in corporate-betrayal
+  const pct = Math.min(100, Math.round((entries / total) * 100));
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function renderTimelineItems(timeline) {
+  const container = document.getElementById('timeline-list');
+  container.innerHTML = timeline.map((evt, i) => `
+    <div class="timeline-item upcoming" data-event-id="${evt.id}">
+      <div class="tl-dot"></div>
+      <div class="tl-label">${evt.label}</div>
+      <div class="tl-index">${i + 1}</div>
+    </div>
+  `).join('');
+}
+
+// Initialize timeline from hardcoded scenario for now
+renderTimelineItems([
+  { id: 'evt_welcome', label: 'Welcome & Scene Setting' },
+  { id: 'evt_leaked_email', label: 'Leaked Email Drops' },
+  { id: 'evt_security_footage', label: 'Security Footage' },
+  { id: 'evt_ai_call', label: 'The Anonymous Call' },
+  { id: 'evt_forensic_report', label: 'Forensic Report' },
+  { id: 'evt_accusation_round', label: 'Accusation Round' },
+  { id: 'evt_reveal', label: 'Resolution & Reveal' },
+]);
+
+// ── Status badge ───────────────────────────────────────────────────────────
+function updateStatusBadge(status) {
+  const badge = document.getElementById('status-badge');
+  badge.className = `status-pill ${status}`;
+  badge.textContent = status.toUpperCase();
+}
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function escHtml(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let toastTimer;
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.className = ''; }, 3000);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mystery Night OS — Main Screen</title>
+  <style>
+    :root {
+      --bg: #050508;
+      --surface: #0d0d14;
+      --accent: #e63946;
+      --gold: #ffd60a;
+      --text: #f0f0f8;
+      --text-dim: #6a6a8a;
+      --red: #e63946;
+      --radius: 6px;
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-mono: 'SF Mono', 'Fira Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Idle / Waiting Screen ── */
+    #idle-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .idle-logo {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 80px);
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .idle-logo span {
+      display: block;
+      font-size: 0.4em;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    .idle-line {
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto;
+    }
+
+    .idle-waiting {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    /* ── Event Display ── */
+    #event-screen {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* News bulletin style */
+    .news-ticker {
+      background: var(--accent);
+      color: white;
+      padding: 8px 24px;
+      font-size: clamp(12px, 1.5vw, 16px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ticker-tag {
+      background: white;
+      color: var(--accent);
+      padding: 2px 10px;
+      font-size: 0.85em;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .ticker-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .event-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(32px, 5vw, 80px) clamp(32px, 8vw, 120px);
+      position: relative;
+    }
+
+    .event-type-label {
+      font-size: clamp(11px, 1.2vw, 14px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: clamp(12px, 2vw, 24px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .event-type-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .event-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 72px);
+      line-height: 1.1;
+      margin-bottom: clamp(20px, 3vw, 40px);
+      color: var(--text);
+      max-width: 80%;
+    }
+
+    .event-content {
+      font-size: clamp(14px, 1.8vw, 22px);
+      line-height: 1.7;
+      color: rgba(240,240,248,0.85);
+      max-width: 75%;
+    }
+
+    /* Announcement style */
+    .event-body.announcement {
+      background: radial-gradient(ellipse at center, #1a0a0a 0%, var(--bg) 70%);
+    }
+
+    /* News style */
+    .event-body.news {
+      background: var(--bg);
+    }
+
+    /* Audio/leaked style */
+    .event-body.audio {
+      background: radial-gradient(ellipse at center, #0a1a0a 0%, var(--bg) 70%);
+    }
+
+    /* ── Corner branding ── */
+    .corner-brand {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      opacity: 0.4;
+    }
+
+    /* ── Timestamp ── */
+    .live-timestamp {
+      position: absolute;
+      top: 16px;
+      right: 32px;
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
+    /* ── Transition overlay ── */
+    #transition-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    #transition-overlay.flash {
+      opacity: 1;
+    }
+
+    /* ── Call notification ── */
+    #call-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a0a0a;
+      border-top: 3px solid var(--accent);
+      padding: 20px 40px;
+      display: none;
+      align-items: center;
+      gap: 20px;
+      z-index: 40;
+      animation: slideUp 0.3s ease;
+    }
+
+    #call-banner.visible { display: flex; }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .call-icon {
+      font-size: 32px;
+      animation: ring 0.5s ease infinite alternate;
+    }
+    @keyframes ring {
+      from { transform: rotate(-15deg); }
+      to   { transform: rotate(15deg); }
+    }
+
+    .call-text { flex: 1; }
+    .call-text .caller { font-size: 14px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .call-text .recipient { font-size: clamp(18px, 2.5vw, 28px); }
+
+    /* ── Paused overlay ── */
+    #paused-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #paused-overlay.visible { display: flex; }
+    #paused-overlay .label {
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    #paused-overlay .message {
+      font-family: var(--font-display);
+      font-size: 48px;
+      color: var(--text);
+    }
+
+    /* ── Ended screen ── */
+    #ended-screen {
+      display: none;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 60px;
+      background: radial-gradient(ellipse at center, #1a0a10 0%, var(--bg) 70%);
+    }
+    #ended-screen.visible { display: flex; }
+    #ended-screen .title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 64px);
+      line-height: 1.1;
+    }
+    #ended-screen .subtitle {
+      font-size: clamp(14px, 1.5vw, 20px);
+      color: var(--text-dim);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Idle -->
+<div id="idle-screen">
+  <div class="idle-logo">
+    Mystery Night
+    <span>Live Crime Thriller</span>
+  </div>
+  <div class="idle-line"></div>
+  <div class="idle-waiting">Waiting for host to begin</div>
+</div>
+
+<!-- Event Display -->
+<div id="event-screen">
+  <div class="news-ticker" id="news-ticker">
+    <span class="ticker-tag">LIVE</span>
+    <span class="ticker-text" id="ticker-text">Mystery Night — The Meridian Affair</span>
+  </div>
+
+  <div class="event-body" id="event-body">
+    <div class="live-timestamp" id="live-timestamp"></div>
+    <div class="event-type-label" id="event-type-label">BREAKING</div>
+    <div class="event-title" id="event-title"></div>
+    <div class="event-content" id="event-content"></div>
+    <div class="corner-brand">Mystery Night OS</div>
+  </div>
+</div>
+
+<!-- Ended -->
+<div id="ended-screen">
+  <div class="title">The Mystery is Solved.</div>
+  <div class="subtitle" id="ended-text">Check your WhatsApp for the full reveal and your detective score.</div>
+</div>
+
+<!-- Paused overlay -->
+<div id="paused-overlay">
+  <div class="label">Evening Paused</div>
+  <div class="message">Short Break</div>
+</div>
+
+<!-- Call banner -->
+<div id="call-banner">
+  <div class="call-icon">📞</div>
+  <div class="call-text">
+    <div class="caller" id="call-caller">Unknown Number</div>
+    <div class="recipient" id="call-recipient">Incoming call…</div>
+  </div>
+</div>
+
+<!-- Transition overlay -->
+<div id="transition-overlay"></div>
+
+<script>
+const TYPE_MAP = {
+  news:         { label: 'Breaking News', tag: 'LIVE', bg: 'news' },
+  announcement: { label: 'System Message', tag: 'ALERT', bg: 'announcement' },
+  audio:        { label: 'Leaked Audio', tag: 'LEAKED', bg: 'audio' },
+  video:        { label: 'Security Footage', tag: 'CCTV', bg: 'news' },
+};
+
+let callBannerTimer = null;
+
+function connectSSE() {
+  const es = new EventSource('/api/events?role=screen');
+
+  es.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      handleMessage(msg);
+    } catch {}
+  };
+
+  es.onerror = () => {
+    setTimeout(connectSSE, 3000);
+  };
+}
+
+function handleMessage(msg) {
+  const { type, payload } = msg;
+
+  switch (type) {
+    case 'state':
+      if (!payload) return;
+      if (payload.status === 'paused') showPaused(true);
+      if (payload.status === 'active') showPaused(false);
+      if (payload.status === 'ended') showEnded();
+      break;
+
+    case 'screen_update':
+      showEvent(payload);
+      break;
+
+    case 'event_fired':
+      if (payload.screenEvent) showEvent(payload.screenEvent);
+      break;
+
+    case 'call':
+      showCallBanner(payload.callerName, payload.guestName);
+      break;
+  }
+}
+
+function showEvent(evt) {
+  transition(() => {
+    const meta = TYPE_MAP[evt.type] ?? TYPE_MAP.announcement;
+
+    // Show event screen, hide others
+    document.getElementById('idle-screen').style.display = 'none';
+    document.getElementById('event-screen').style.display = 'flex';
+    document.getElementById('ended-screen').classList.remove('visible');
+
+    // Update ticker
+    document.getElementById('ticker-text').textContent = evt.title;
+
+    // Update body
+    const body = document.getElementById('event-body');
+    body.className = `event-body ${meta.bg}`;
+
+    document.getElementById('event-type-label').textContent = meta.label;
+    document.getElementById('event-title').textContent = evt.title;
+    document.getElementById('event-content').textContent = evt.body;
+    document.getElementById('live-timestamp').textContent = new Date().toLocaleTimeString('en-GB');
+  });
+}
+
+function transition(fn) {
+  const overlay = document.getElementById('transition-overlay');
+  overlay.classList.add('flash');
+  setTimeout(() => {
+    fn();
+    overlay.classList.remove('flash');
+  }, 400);
+}
+
+function showPaused(isPaused) {
+  const overlay = document.getElementById('paused-overlay');
+  overlay.classList.toggle('visible', isPaused);
+}
+
+function showEnded() {
+  transition(() => {
+    document.getElementById('idle-screen').style.display = 'none';
+    document.getElementById('event-screen').style.display = 'none';
+    document.getElementById('ended-screen').classList.add('visible');
+  });
+}
+
+function showCallBanner(callerName, recipientName) {
+  const banner = document.getElementById('call-banner');
+  document.getElementById('call-caller').textContent = callerName || 'Unknown Number';
+  document.getElementById('call-recipient').textContent = `${recipientName} — your phone is ringing`;
+  banner.classList.add('visible');
+
+  clearTimeout(callBannerTimer);
+  callBannerTimer = setTimeout(() => {
+    banner.classList.remove('visible');
+  }, 30000);
+}
+
+// Keep timestamp updated
+setInterval(() => {
+  const el = document.getElementById('live-timestamp');
+  if (el && document.getElementById('event-screen').style.display !== 'none') {
+    el.textContent = new Date().toLocaleTimeString('en-GB');
+  }
+}, 1000);
+
+connectSSE();
+</script>
+</body>
+</html>
