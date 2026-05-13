@@ -21,11 +21,37 @@ export interface Character {
 }
 
 export interface ScreenEvent {
-  type: "video" | "news" | "audio" | "announcement";
+  type: "video" | "news" | "audio" | "announcement" | "cctv" | "evidence" | "missing" | "social" | "newspaper";
   title: string;
   body: string;
   mediaUrl?: string;
   duration?: number;
+  // cctv fields
+  cameraId?: string;
+  location?: string;
+  // evidence fields
+  caseNo?: string;
+  suspect?: string;
+  // missing poster fields
+  emoji?: string;
+  sub?: string;
+  contact?: string;
+  reward?: string;
+  // social media fields
+  platform?: "facebook" | "instagram" | "twitter";
+  username?: string;
+  avatar?: string;
+  postTime?: string;
+  likes?: number;
+  comments?: number;
+  shares?: number;
+  // newspaper fields
+  masthead?: string;
+  tagline?: string;
+  subheadline?: string;
+  dateline?: string;
+  date?: string;
+  edition?: string;
 }
 
 export interface BuzzEvent {
