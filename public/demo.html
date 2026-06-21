@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mystery Night OS — Live Demo</title>
+  <style>
+    :root {
+      --bg: #050508;
+      --surface: #0d0d14;
+      --accent: #e63946;
+      --gold: #ffd60a;
+      --green: #00ff41;
+      --text: #f0f0f8;
+      --text-dim: #6a6a8a;
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-mono: 'SF Mono', 'Fira Mono', monospace;
+      --font-news: 'Times New Roman', Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: var(--text);
+      font-family: var(--font-mono);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .demo-topbar {
+      background: #0a0a10;
+      border-bottom: 1px solid #1a1a28;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .demo-logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+    .demo-logo span {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: block;
+    }
+    .demo-badge {
+      background: var(--accent);
+      color: white;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.7} 50%{opacity:1} }
+
+    /* ── Main layout ── */
+    .demo-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      overflow: hidden;
+    }
+
+    /* ── Host panel ── */
+    .host-panel {
+      background: #0a0a10;
+      border-left: 1px solid #1a1a28;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .host-section {
+      padding: 16px;
+      border-bottom: 1px solid #1a1a28;
+    }
+    .host-section-title {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .scenario-info {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .scenario-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .scenario-tag {
+      display: inline-block;
+      background: #1a1a28;
+      color: var(--text-dim);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      margin-left: 4px;
+    }
+
+    /* Guest list */
+    .guest-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .guest-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2a2a3a;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .guest-dot.active { background: var(--green); box-shadow: 0 0 6px rgba(0,255,65,0.5); }
+    .guest-name { flex: 1; }
+    .guest-char { color: #3a3a5a; font-size: 10px; }
+
+    /* Controls */
+    .controls-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #c0202e; }
+    .btn-secondary { background: #1a1a28; color: var(--text-dim); border: 1px solid #2a2a3a; }
+    .btn-secondary:hover { background: #252535; color: var(--text); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Progress */
+    .progress-track {
+      height: 3px;
+      background: #1a1a28;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .progress-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-align: left;
+      direction: ltr;
+    }
+
+    /* Event log */
+    .event-log {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+    }
+    .log-entry {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 10px;
+      line-height: 1.5;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+    .log-icon { font-size: 14px; flex-shrink: 0; }
+    .log-time { color: var(--text-dim); flex-shrink: 0; direction: ltr; }
+    .log-text { color: var(--text); }
+    .log-detail { color: var(--text-dim); font-size: 9px; margin-top: 2px; }
+
+    /* Timeline sidebar */
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 5px 0;
+      font-size: 10px;
+      color: var(--text-dim);
+      border-right: 2px solid transparent;
+      padding-right: 8px;
+      transition: all 0.2s;
+    }
+    .timeline-item.done { color: #3a3a5a; }
+    .timeline-item.active { color: var(--text); border-right-color: var(--accent); }
+    .timeline-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2a2a3a;
+      flex-shrink: 0;
+    }
+    .timeline-item.done .timeline-dot { background: #2a3a2a; }
+    .timeline-item.active .timeline-dot { background: var(--accent); box-shadow: 0 0 6px rgba(230,57,70,0.6); }
+
+    /* WhatsApp buzz popup */
+    #buzz-popup {
+      position: fixed;
+      bottom: 20px;
+      left: 16px;
+      width: 240px;
+      background: #1a2a1a;
+      border: 1px solid #2a5a2a;
+      border-radius: 12px;
+      padding: 12px 14px;
+      z-index: 100;
+      display: none;
+      animation: slideUp 0.3s ease;
+      direction: rtl;
+    }
+    #buzz-popup.visible { display: block; }
+    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:none;opacity:1} }
+    .buzz-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .buzz-wa-icon { font-size: 18px; }
+    .buzz-title { font-size: 11px; font-weight: 700; color: #4caf50; letter-spacing: 1px; }
+    .buzz-recipient { font-size: 10px; color: #aaa; }
+    .buzz-body { font-size: 11px; color: var(--text); line-height: 1.55; }
+
+    /* ── TV SCREEN ── */
+    .tv-screen {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Screen panels */
+    .screen-panel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .screen-panel.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── IDLE ── */
+    #panel-idle {
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .idle-logo {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 64px);
+      letter-spacing: 0.15em;
+      text-align: center;
+      line-height: 1.1;
+    }
+    .idle-logo span {
+      display: block;
+      font-size: 0.38em;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+    .idle-line { width: 50px; height: 2px; background: var(--accent); }
+    .idle-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── NEWS ── */
+    #panel-news { flex-direction: column; }
+    .news-ticker {
+      background: var(--accent);
+      color: white;
+      padding: 7px 20px;
+      font-size: clamp(11px, 1.3vw, 15px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .ticker-tag {
+      background: white;
+      color: var(--accent);
+      padding: 2px 8px;
+      font-size: 0.82em;
+      font-weight: 900;
+    }
+    .news-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(24px, 4vw, 60px) clamp(24px, 6vw, 80px);
+      position: relative;
+    }
+    .event-label {
+      font-size: clamp(10px, 1.1vw, 13px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .event-label::before { content:''; display:inline-block; width:20px; height:2px; background:var(--accent); }
+    .news-title {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 4vw, 56px);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      max-width: 80%;
+    }
+    .news-content {
+      font-size: clamp(13px, 1.6vw, 20px);
+      line-height: 1.7;
+      color: rgba(240,240,248,0.85);
+      max-width: 72%;
+    }
+    .corner-brand {
+      position: absolute;
+      bottom: 18px;
+      left: 24px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      opacity: 0.35;
+    }
+    .live-ts {
+      position: absolute;
+      top: 14px;
+      left: 24px;
+      font-size: 11px;
+      color: var(--text-dim);
+      direction: ltr;
+    }
+
+    /* ── CCTV ── */
+    #panel-cctv {
+      position: relative;
+      background: #000;
+    }
+    .cctv-noise {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,60,0,0.15) 0%, #000 100%);
+    }
+    .cctv-scanlines {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,65,0.025) 2px, rgba(0,255,65,0.025) 4px);
+      pointer-events: none;
+    }
+    .cctv-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.65) 100%);
+    }
+    .cctv-hud {
+      position: absolute; top: 16px; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 0 20px;
+      font-family: var(--font-mono);
+      font-size: clamp(10px,1vw,13px);
+      color: var(--green);
+      z-index: 4;
+      direction: ltr;
+    }
+    .cctv-rec { display:flex; align-items:center; gap:7px; letter-spacing:2px; }
+    .cctv-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); animation:blink 1s step-end infinite; }
+    @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+    .cctv-content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: clamp(50px,7vw,100px) clamp(30px,5vw,80px);
+      z-index: 3;
+    }
+    .cctv-tag { font-size: clamp(9px,1vw,12px); color:rgba(0,255,65,0.55); letter-spacing:4px; text-transform:uppercase; margin-bottom:14px; }
+    .cctv-title { font-size: clamp(18px,2.5vw,34px); color:var(--green); letter-spacing:2px; text-shadow:0 0 20px rgba(0,255,65,0.5); margin-bottom:18px; line-height:1.2; }
+    .cctv-body { font-size:clamp(13px,1.7vw,22px); color:rgba(0,255,65,0.8); line-height:1.65; max-width:75%; text-shadow:0 0 8px rgba(0,255,65,0.25); }
+    .cctv-footer {
+      position:absolute; bottom:20px; left:0; right:0;
+      display:flex; justify-content:space-between;
+      padding:0 20px;
+      font-size:clamp(9px,0.9vw,11px);
+      color:rgba(0,255,65,0.45);
+      z-index:4; direction:ltr; letter-spacing:2px;
+    }
+
+    /* ── EVIDENCE ── */
+    #panel-evidence {
+      background: #0e0a04;
+      align-items: center;
+      justify-content: center;
+    }
+    .evidence-wrapper { display:flex; flex-direction:column; align-items:center; gap:14px; }
+    .evidence-tag { font-size:clamp(9px,1vw,12px); letter-spacing:4px; text-transform:uppercase; color:var(--text-dim); }
+    .evidence-card {
+      background: #c4a05a;
+      color: #1a0f04;
+      width: min(580px, 85vw);
+      padding: clamp(24px,4vw,48px) clamp(24px,4.5vw,56px);
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.85), inset 0 0 50px rgba(0,0,0,0.07);
+      direction: rtl;
+    }
+    .ev-stamp {
+      position:absolute; top:-16px; left:24px;
+      background:var(--accent); color:white;
+      padding:5px 18px;
+      font-size:clamp(14px,2vw,24px);
+      font-weight:900; letter-spacing:5px; text-transform:uppercase;
+      transform:rotate(-2.5deg);
+      box-shadow:3px 3px 0 rgba(0,0,0,0.3);
+      font-family:Impact,'Arial Black',sans-serif;
+    }
+    .ev-case { font-family:var(--font-mono); font-size:11px; letter-spacing:3px; color:#6a4015; margin-bottom:16px; direction:ltr; text-align:left; }
+    .ev-divider { height:1px; background:rgba(0,0,0,0.18); margin:12px 0; }
+    .ev-field { margin-bottom:14px; }
+    .ev-label { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#6a4015; margin-bottom:4px; font-family:var(--font-mono); }
+    .ev-value { font-size:clamp(13px,1.7vw,20px); font-weight:700; color:#100800; font-family:var(--font-display); line-height:1.3; }
+    .ev-footer { margin-top:18px; padding-top:12px; border-top:2px solid rgba(0,0,0,0.25); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#6a4015; text-align:center; font-family:var(--font-mono); }
+
+    /* ── MISSING ── */
+    #panel-missing {
+      background: #d0ccc4;
+      align-items: center;
+      justify-content: center;
+    }
+    .missing-poster {
+      background: #fafaf7;
+      color: #111;
+      width: min(460px, 78vw);
+      padding: clamp(22px,3.5vw,42px) clamp(22px,4vw,46px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      text-align: center;
+      direction: rtl;
+      border-top: 5px solid #111;
+    }
+    .missing-head { font-size:clamp(44px,7.5vw,88px); font-weight:900; color:var(--accent); line-height:1; margin-bottom:14px; font-family:Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+    .missing-photo { width:min(200px,45vw); height:clamp(110px,18vh,190px); background:#e0e0dc; margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:clamp(40px,7vw,72px); border:2px solid #bbb; }
+    .missing-name { font-family:var(--font-display); font-size:clamp(18px,2.8vw,32px); font-weight:700; margin-bottom:4px; }
+    .missing-sub { font-size:clamp(11px,1.3vw,14px); color:#555; margin-bottom:12px; font-style:italic; }
+    .missing-seen { font-size:clamp(11px,1.2vw,14px); color:#333; line-height:1.55; margin-bottom:14px; padding:8px; background:#f0f0ec; border-right:3px solid var(--accent); text-align:right; }
+    .missing-contact { display:inline-block; font-size:clamp(13px,1.8vw,19px); font-weight:700; color:white; background:var(--accent); padding:8px 20px; margin-top:6px; }
+
+    /* ── SOCIAL ── */
+    #panel-social {
+      background: #0d0d1e;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .social-leaked { font-size:clamp(9px,1vw,12px); letter-spacing:4px; text-transform:uppercase; color:var(--accent); border:1px solid var(--accent); padding:4px 16px; }
+    .social-frame { background:white; color:#1c1e21; width:min(580px,86vw); border-radius:6px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.8); direction:ltr; }
+    .social-bar { padding:9px 14px; font-size:clamp(10px,1.1vw,13px); font-weight:700; letter-spacing:1px; color:white; background:#1877f2; }
+    .social-head { padding:10px 14px; display:flex; align-items:center; gap:9px; border-bottom:1px solid #e4e6eb; }
+    .social-av { width:38px; height:38px; border-radius:50%; background:#e4e6eb; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+    .social-username { font-size:clamp(12px,1.3vw,15px); font-weight:700; color:#050505; }
+    .social-when { font-size:clamp(9px,1vw,11px); color:#65676b; }
+    .social-post { padding:clamp(12px,1.8vw,20px) 16px; font-size:clamp(13px,1.6vw,20px); line-height:1.55; color:#050505; direction:rtl; }
+    .social-engage { padding:8px 14px; border-top:1px solid #e4e6eb; display:flex; gap:18px; font-size:clamp(10px,1.1vw,13px); color:#65676b; direction:ltr; }
+
+    /* ── NEWSPAPER ── */
+    #panel-newspaper {
+      background: #c8bfa0;
+      align-items: center;
+      justify-content: center;
+    }
+    .newspaper-page {
+      background: #f0e8d0;
+      color: #0a0800;
+      width: min(820px, 93vw);
+      max-height: 90vh;
+      overflow: hidden;
+      box-shadow: 5px 5px 40px rgba(0,0,0,0.6);
+      direction: rtl;
+      display: flex;
+      flex-direction: column;
+    }
+    .np-masthead {
+      border-bottom: 4px double #0a0800;
+      padding: clamp(10px,1.6vw,20px) clamp(16px,3vw,36px);
+      text-align: center;
+      background: #ece4c8;
+    }
+    .np-name { font-family:var(--font-news); font-size:clamp(26px,4.8vw,60px); font-weight:900; letter-spacing:0.08em; line-height:1; }
+    .np-tagline { font-size:clamp(8px,0.9vw,11px); letter-spacing:2px; text-transform:uppercase; color:#5a4a20; margin-top:4px; font-family:var(--font-mono); }
+    .np-meta { display:flex; justify-content:space-between; border-top:1px solid #0a0800; border-bottom:1px solid #0a0800; padding:3px clamp(16px,3vw,36px); font-size:clamp(7px,0.85vw,10px); letter-spacing:1px; color:#5a4a20; font-family:var(--font-mono); margin-top:6px; }
+    .np-body { padding:clamp(12px,2.2vw,28px) clamp(16px,3vw,36px); flex:1; overflow:hidden; }
+    .np-headline { font-family:var(--font-news); font-size:clamp(20px,4vw,54px); font-weight:900; line-height:1.05; margin-bottom:8px; border-bottom:2px solid #0a0800; padding-bottom:8px; }
+    .np-sub { font-family:var(--font-news); font-size:clamp(11px,1.5vw,19px); font-style:italic; color:#3a2a10; margin-bottom:14px; margin-top:6px; }
+    .np-cols { display:grid; grid-template-columns:1fr 1fr; gap:0 clamp(12px,1.8vw,24px); border-top:1px solid rgba(0,0,0,0.2); padding-top:12px; }
+    .np-col { font-family:var(--font-news); font-size:clamp(11px,1.3vw,16px); line-height:1.65; text-align:justify; color:#1a1008; }
+    .np-col+.np-col { border-right:1px solid rgba(0,0,0,0.15); padding-right:clamp(12px,1.8vw,24px); }
+
+    /* ── ENDED ── */
+    #panel-ended {
+      background: radial-gradient(ellipse at center, #1a0a10 0%, var(--bg) 70%);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+      padding: 60px;
+    }
+    .ended-title { font-family:var(--font-display); font-size:clamp(28px,5vw,60px); line-height:1.1; }
+    .ended-sub { font-size:clamp(13px,1.4vw,18px); color:var(--text-dim); max-width:500px; line-height:1.6; }
+
+    /* Transition flash */
+    #flash {
+      position: fixed; inset: 0;
+      background: #000;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #flash.on { opacity: 1; }
+
+    /* Auto-advance bar */
+    .auto-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      z-index: 10;
+    }
+    .auto-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width linear;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="demo-topbar">
+  <div class="demo-logo">
+    Mystery Night OS
+    <span>מנוע ערבי מסתורין חי</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase">
+      תרחיש: מי הרג את שמיל?
+    </div>
+    <div class="demo-badge">Live Demo</div>
+  </div>
+</div>
+
+<!-- Main layout -->
+<div class="demo-main">
+
+  <!-- Host panel -->
+  <div class="host-panel">
+    <div class="host-section">
+      <div class="host-section-title">Scenario</div>
+      <div class="scenario-info">
+        <div class="scenario-name">מי הרג את שמיל?</div>
+        <div style="margin-top:4px">
+          <span class="scenario-tag">קומדיה</span>
+          <span class="scenario-tag">6 שחקנים</span>
+          <span class="scenario-tag">75 דק'</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="host-section">
+      <div class="host-section-title">Guests</div>
+      <div id="guest-list">
+        <div class="guest-row"><div class="guest-dot active" id="dot-0"></div><div class="guest-name">ענבל ק.</div><div class="guest-char">רחלי גולדברג</div></div>
+        <div class="guest-row"><div class="guest-dot active" id="dot-1"></div><div class="guest-name">יוסי מ.</div><div class="guest-char">מוטי ויצמן</div></div>
+        <div class="guest-row"><div class="guest-dot active" id="dot-2"></div><div class="guest-name">תמר ב.</div><div class="guest-char">זהבית כץ</div></div>
+        <div class="guest-row"><div class="guest-dot" id="dot-3"></div><div class="guest-name">רון ש.</div><div class="guest-char">יניב חזן</div></div>
+        <div class="guest-row"><div class="guest-dot" id="dot-4"></div><div class="guest-name">מיכל ד.</div><div class="guest-char">דליה שמיר</div></div>
+        <div class="guest-row"><div class="guest-dot active" id="dot-5"></div><div class="guest-name">HOST</div><div class="guest-char">שמידור</div></div>
+      </div>
+    </div>
+
+    <div class="host-section">
+      <div class="host-section-title">Timeline</div>
+      <div class="timeline-list" id="timeline-list">
+        <div class="timeline-item active" id="tl-0"><div class="timeline-dot"></div>פוסטר נעדר</div>
+        <div class="timeline-item" id="tl-1"><div class="timeline-dot"></div>מבזק: שמיל מת</div>
+        <div class="timeline-item" id="tl-2"><div class="timeline-dot"></div>מצלמת אבטחה</div>
+        <div class="timeline-item" id="tl-3"><div class="timeline-dot"></div>ראיה: קופסת טונה</div>
+        <div class="timeline-item" id="tl-4"><div class="timeline-dot"></div>פוסט פייסבוק דלוף</div>
+        <div class="timeline-item" id="tl-5"><div class="timeline-dot"></div>עיתון השכונה</div>
+        <div class="timeline-item" id="tl-6"><div class="timeline-dot"></div>החשיפה הגדולה</div>
+      </div>
+    </div>
+
+    <div class="host-section">
+      <div class="host-section-title">Progress</div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:14%"></div></div>
+      <div class="progress-label" id="prog-label">Event 1 / 7</div>
+    </div>
+
+    <div class="host-section">
+      <div class="host-section-title">Controls</div>
+      <div class="controls-row">
+        <button class="btn btn-primary" id="btn-next" onclick="advance()">▶ Next Event</button>
+        <button class="btn btn-secondary" id="btn-auto" onclick="toggleAuto()">⏸ Auto</button>
+      </div>
+    </div>
+
+    <div class="event-log" id="event-log">
+      <div class="host-section-title" style="padding:0 0 8px">Event Log</div>
+      <div class="log-entry">
+        <span class="log-icon">🎬</span>
+        <div>
+          <div class="log-time">00:00</div>
+          <div class="log-text">Evening started</div>
+          <div class="log-detail">Shmil Cat scenario loaded</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TV Screen -->
+  <div class="tv-screen">
+
+    <!-- IDLE -->
+    <div class="screen-panel active" id="panel-idle">
+      <div class="idle-logo">Mystery Night<span>מי הרג את שמיל?</span></div>
+      <div class="idle-line"></div>
+      <div class="idle-sub">ממתין למארח להתחיל</div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="screen-panel" id="panel-news">
+      <div class="news-ticker">
+        <span class="ticker-tag" id="n-tag">שידור חי</span>
+        <span id="n-ticker">Mystery Night — חדשות שכונת גפן</span>
+      </div>
+      <div class="news-body" style="background:var(--bg)">
+        <div class="live-ts" id="n-ts"></div>
+        <div class="event-label" id="n-label">חדשות אחרונות</div>
+        <div class="news-title" id="n-title"></div>
+        <div class="news-content" id="n-body"></div>
+        <div class="corner-brand">Mystery Night OS</div>
+      </div>
+    </div>
+
+    <!-- CCTV -->
+    <div class="screen-panel" id="panel-cctv">
+      <div class="cctv-noise"></div>
+      <div class="cctv-scanlines"></div>
+      <div class="cctv-vignette"></div>
+      <div class="cctv-hud">
+        <div class="cctv-rec"><div class="cctv-dot"></div> REC</div>
+        <div id="cctv-cam">CAM-03</div>
+        <div id="cctv-ts" style="font-variant-numeric:tabular-nums">00:00:00</div>
+      </div>
+      <div class="cctv-content">
+        <div class="cctv-tag">מצלמת אבטחה — פעילה</div>
+        <div class="cctv-title" id="cctv-title"></div>
+        <div class="cctv-body" id="cctv-body"></div>
+      </div>
+      <div class="cctv-footer">
+        <span id="cctv-loc">LOCATION UNKNOWN</span>
+        <span>MYSTERY NIGHT SECURITY</span>
+      </div>
+    </div>
+
+    <!-- EVIDENCE -->
+    <div class="screen-panel" id="panel-evidence">
+      <div class="evidence-wrapper">
+        <div class="evidence-tag">פריט ראיה — סווג</div>
+        <div class="evidence-card">
+          <div class="ev-stamp">ראיה</div>
+          <div class="ev-case" id="ev-case">CASE NO. ——</div>
+          <div class="ev-field">
+            <div class="ev-label">תיאור הפריט</div>
+            <div class="ev-value" id="ev-title"></div>
+          </div>
+          <div class="ev-divider"></div>
+          <div class="ev-field">
+            <div class="ev-label">מיקום / נסיבות הגילוי</div>
+            <div class="ev-value" id="ev-body"></div>
+          </div>
+          <div class="ev-field">
+            <div class="ev-label">חשוד קשור</div>
+            <div class="ev-value" id="ev-suspect"></div>
+          </div>
+          <div class="ev-footer">שרשרת העברת הראיה — נדרשת חתימה לכל העברה</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSING -->
+    <div class="screen-panel" id="panel-missing">
+      <div class="missing-poster">
+        <div class="missing-head">נעדר/ת</div>
+        <div class="missing-photo">🐱</div>
+        <div class="missing-name">שמיל — חתול שכונת גפן</div>
+        <div class="missing-sub">בריטיש שורטהייר, 7 שנים</div>
+        <div class="missing-seen">נעלם לאחרונה ליד רחוב הגפן 7. חתול אפור, גדול, עם כתם לבן על האף. מוכר לכל הדיירים.</div>
+        <div class="missing-contact">דליה שמיר | 050-XXX-XXXX</div>
+        <div style="font-size:11px;color:#777;margin-top:10px;font-style:italic">שכר: עוגת גזר תוצרת בית + הכרת תודה רשמית של הוועדה</div>
+      </div>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="screen-panel" id="panel-social">
+      <div class="social-leaked">פוסט דלוף — הושג ממקורות אנונימיים</div>
+      <div class="social-frame">
+        <div class="social-bar">Facebook</div>
+        <div class="social-head">
+          <div class="social-av">👨‍💼</div>
+          <div>
+            <div class="social-username">Yaniv Hazan</div>
+            <div class="social-when">לפני 3 שבועות · 👥 חברים בלבד</div>
+          </div>
+        </div>
+        <div class="social-post">לחברים בלבד: אם אפשר לשלם 3 מיליון על דירה בשכונה הזאת, אפשר גם לפתור את בעיית החתול. לא אוסיף פרטים. 😶</div>
+        <div class="social-engage">
+          <span>👍 😮 ❤️  3</span>
+          <span>💬 12 תגובות</span>
+          <span>↗ 0 שיתופים</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEWSPAPER -->
+    <div class="screen-panel" id="panel-newspaper">
+      <div class="newspaper-page">
+        <div class="np-masthead">
+          <div class="np-name">קול הגפן</div>
+          <div class="np-tagline">עיתון הרחוב לשכונת גפן | מחיר: 2 ₪</div>
+          <div class="np-meta">
+            <span>מהדורת חקירה מיוחדת</span>
+            <span>חדשות בלעדיות</span>
+            <span>גיליון דחוף</span>
+          </div>
+        </div>
+        <div class="np-body">
+          <div class="np-headline">רצח? תאונה? קנוניה? — שמיל לא ייחקר לבד</div>
+          <div class="np-sub">השכונה דורשת תשובות. חשודים יש בשפע.</div>
+          <div class="np-cols">
+            <div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">גפן, בוקר מוקדם —</div>
+              <div class="np-col">גופתו של שמיל, חתול שכונת גפן הוותיק, התגלתה הבוקר על ידי זהבית כץ שיצאה להאכיל ציפורים. "הוא היה שם, לא זז," סיפרה בדמעות. ועדת השכונה, בראשות רחלי גולדברג, זימנה ישיבת חירום.</div>
+            </div>
+            <div class="np-col">החשודים רבים: מוטי ויצמן, שהגיש תביעה קטנה נגד שמיל (1,200 ₪), נמצא עם עיניים אדומות. יניב חזן, שפוסט שנוי במחלוקת שלו נחשף, הכחיש כל קשר. זהבית עצמה סירבה להגיב — ורק אמרה: "הציפורים שלי כבר בטוחות יותר." שמיל יוזכר. האשם ייחשף.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENDED / REVEAL -->
+    <div class="screen-panel" id="panel-ended">
+      <div class="ended-title">הרוצח הוא...<br>מוטי ויצמן 🔴</div>
+      <div class="ended-sub">מוטי לא תכנן רצח — הוא תכנן שקט. גלולת השינה שהסתיר בקופסת הטונה הייתה חזקה מדי לחתול זקן. הוא בכה על שמיל שלושה ימים לפני שהתגלה.</div>
+      <div style="margin-top:24px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim)">Mystery Night OS · סיום הערב</div>
+    </div>
+
+    <!-- Auto-advance bar -->
+    <div class="auto-bar"><div class="auto-fill" id="auto-fill"></div></div>
+
+  </div><!-- tv-screen -->
+</div>
+
+<!-- WhatsApp buzz popup -->
+<div id="buzz-popup">
+  <div class="buzz-header">
+    <div class="buzz-wa-icon">💬</div>
+    <div>
+      <div class="buzz-title">WhatsApp Buzz</div>
+      <div class="buzz-recipient" id="buzz-to"></div>
+    </div>
+  </div>
+  <div class="buzz-body" id="buzz-body"></div>
+</div>
+
+<!-- Flash overlay -->
+<div id="flash"></div>
+
+<script>
+const EVENTS = [
+  {
+    panel: 'missing',
+    tl: 0,
+    log: { icon: '📋', text: 'Missing poster', detail: 'פוסטר נעדר — TV screen' },
+    buzzes: []
+  },
+  {
+    panel: 'news',
+    tl: 1,
+    n: { tag: 'שידור חי', label: 'חדשות אחרונות', title: 'שמיל נמצא — חדשות עצובות מגפן', body: 'הבוקר נמצא שמיל — חתול השכונה — ליד פח האשפה של מספר 7. הסיבה הרשמית לא ברורה. השכנים מזועזעים. החקירה החלה.' },
+    log: { icon: '📺', text: 'News flash fired', detail: 'שמיל נמצא מת' },
+    buzzes: [
+      { to: 'רחלי גולדברג', msg: 'שמיל מת. כולם יסתכלו עלייך. הכיני משפט פתיחה.' },
+      { to: 'מוטי ויצמן', msg: 'שמיל מת. אתה יודע מה שאתה יודע. הישאר רגוע.' },
+    ]
+  },
+  {
+    panel: 'cctv',
+    tl: 2,
+    log: { icon: '📷', text: 'CCTV footage revealed', detail: 'CAM-03 · 23:47' },
+    buzzes: []
+  },
+  {
+    panel: 'evidence',
+    tl: 3,
+    log: { icon: '🔬', text: 'Evidence card', detail: 'קופסת טונה — CASE GN-2024-007' },
+    buzzes: [
+      { to: 'מוטי ויצמן', msg: 'קופסת הטונה שלך נמצאה בזירה. יש עליה טביעת אצבע. חשוב מה תגיד.' },
+    ]
+  },
+  {
+    panel: 'social',
+    tl: 4,
+    log: { icon: '📱', text: 'Leaked Facebook post', detail: 'יניב חזן · לחברים בלבד' },
+    buzzes: []
+  },
+  {
+    panel: 'newspaper',
+    tl: 5,
+    log: { icon: '📰', text: 'קול הגפן — מהדורה מיוחדת', detail: 'רצח? תאונה? קנוניה?' },
+    buzzes: []
+  },
+  {
+    panel: 'ended',
+    tl: 6,
+    log: { icon: '🎭', text: 'THE REVEAL', detail: 'מוטי ויצמן — הרוצח' },
+    buzzes: [
+      { to: 'כולם', msg: '🎭 התעלומה נפתרה\n\nהרוצח הוא מוטי ויצמן. הוא הסתיר גלולת שינה בקופסת הטונה.' },
+    ]
+  }
+];
+
+let currentEvent = -1;
+let autoPlay = true;
+let autoTimer = null;
+let autoFillTimer = null;
+const AUTO_DURATION = 8000;
+
+const CCTV_DATA = {
+  title: 'תנועה זוהתה ליד פח 7 — 23:47',
+  body: 'דמות עם שקית קניות שחורה ניגשת לאזור הפחים. עוצרת כ-40 שניות. עוזבת בכיוון מדרגות הבניין. שמיל נראה לאחרונה חי בפרדוס הזה בשעה 23:15.',
+  cam: 'CAM-03',
+  loc: 'רחוב הגפן 7 — כניסה אחורית'
+};
+
+const EVIDENCE_DATA = {
+  case: 'CASE NO. GN-2024-007',
+  title: 'קופסת טונה — Starkist, 160 גרם',
+  body: 'נמצאה בסמוך לפח, פתוחה. ריח חזק. מכילה שאריות. על הפקק — טביעת אצבע חלקית.',
+  suspect: 'לא זוהה — בדיקה ממתינה'
+};
+
+function setPanel(name) {
+  document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function flash(cb) {
+  const f = document.getElementById('flash');
+  f.classList.add('on');
+  setTimeout(() => { cb(); f.classList.remove('on'); }, 300);
+}
+
+function addLog(icon, text, detail) {
+  const log = document.getElementById('event-log');
+  const mins = String(Math.floor(Date.now() / 60000 % 60)).padStart(2,'0');
+  const secs = String(Math.floor(Date.now() / 1000 % 60)).padStart(2,'0');
+  const el = document.createElement('div');
+  el.className = 'log-entry';
+  el.innerHTML = `<span class="log-icon">${icon}</span><div><div class="log-time">${mins}:${secs}</div><div class="log-text">${text}</div><div class="log-detail">${detail}</div></div>`;
+  log.appendChild(el);
+  log.scrollTop = log.scrollHeight;
+}
+
+function showBuzz(to, msg) {
+  const popup = document.getElementById('buzz-popup');
+  document.getElementById('buzz-to').textContent = '→ ' + to;
+  document.getElementById('buzz-body').textContent = msg;
+  popup.classList.add('visible');
+  setTimeout(() => popup.classList.remove('visible'), 5000);
+}
+
+function updateTimeline(idx) {
+  for (let i = 0; i < 7; i++) {
+    const el = document.getElementById('tl-' + i);
+    el.className = 'timeline-item' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  }
+}
+
+function updateProgress(idx) {
+  const pct = Math.round(((idx + 1) / 7) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `Event ${idx + 1} / 7`;
+}
+
+function startAutoFill() {
+  const fill = document.getElementById('auto-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  setTimeout(() => {
+    fill.style.transition = `width ${AUTO_DURATION}ms linear`;
+    fill.style.width = '100%';
+  }, 50);
+}
+
+function scheduleAuto() {
+  if (autoTimer) clearTimeout(autoTimer);
+  if (!autoPlay) return;
+  startAutoFill();
+  autoTimer = setTimeout(() => {
+    if (currentEvent < EVENTS.length - 1) advance();
+  }, AUTO_DURATION);
+}
+
+function toggleAuto() {
+  autoPlay = !autoPlay;
+  const btn = document.getElementById('btn-auto');
+  btn.textContent = autoPlay ? '⏸ Auto' : '▶ Auto';
+  if (autoPlay) {
+    scheduleAuto();
+  } else {
+    if (autoTimer) clearTimeout(autoTimer);
+    document.getElementById('auto-fill').style.transition = 'none';
+    document.getElementById('auto-fill').style.width = '0%';
+  }
+}
+
+function advance() {
+  if (currentEvent >= EVENTS.length - 1) return;
+  currentEvent++;
+  const ev = EVENTS[currentEvent];
+
+  flash(() => {
+    // Prep specific panel data
+    if (ev.panel === 'news' && ev.n) {
+      document.getElementById('n-tag').textContent = ev.n.tag;
+      document.getElementById('n-ticker').textContent = ev.n.title;
+      document.getElementById('n-label').textContent = ev.n.label;
+      document.getElementById('n-title').textContent = ev.n.title;
+      document.getElementById('n-body').textContent = ev.n.body;
+    }
+    if (ev.panel === 'cctv') {
+      document.getElementById('cctv-title').textContent = CCTV_DATA.title;
+      document.getElementById('cctv-body').textContent = CCTV_DATA.body;
+      document.getElementById('cctv-cam').textContent = CCTV_DATA.cam;
+      document.getElementById('cctv-loc').textContent = CCTV_DATA.loc;
+    }
+    if (ev.panel === 'evidence') {
+      document.getElementById('ev-case').textContent = EVIDENCE_DATA.case;
+      document.getElementById('ev-title').textContent = EVIDENCE_DATA.title;
+      document.getElementById('ev-body').textContent = EVIDENCE_DATA.body;
+      document.getElementById('ev-suspect').textContent = EVIDENCE_DATA.suspect;
+    }
+
+    setPanel(ev.panel);
+    updateTimeline(ev.tl);
+    updateProgress(currentEvent);
+    addLog(ev.log.icon, ev.log.text, ev.log.detail);
+
+    // Buzz with delay
+    if (ev.buzzes.length > 0) {
+      setTimeout(() => {
+        ev.buzzes.forEach((b, i) => {
+          setTimeout(() => showBuzz(b.to, b.msg), i * 2500);
+          addLog('📱', `WhatsApp → ${b.to}`, b.msg.substring(0, 45) + '…');
+        });
+      }, 800);
+    }
+
+    // Activate guest dots on consent event
+    if (currentEvent === 1) {
+      document.getElementById('dot-3').classList.add('active');
+      setTimeout(() => document.getElementById('dot-4').classList.add('active'), 1500);
+    }
+  });
+
+  if (currentEvent >= EVENTS.length - 1) {
+    document.getElementById('btn-next').disabled = true;
+    if (autoTimer) clearTimeout(autoTimer);
+    document.getElementById('auto-fill').style.transition = 'none';
+    document.getElementById('auto-fill').style.width = '0%';
+    return;
+  }
+
+  if (autoPlay) scheduleAuto();
+}
+
+// CCTV live clock
+setInterval(() => {
+  const el = document.getElementById('cctv-ts');
+  if (el) {
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('he-IL', { hour12: false });
+  }
+  const nts = document.getElementById('n-ts');
+  if (nts && document.getElementById('panel-news').classList.contains('active')) {
+    nts.textContent = new Date().toLocaleTimeString('he-IL');
+  }
+}, 1000);
+
+// Start auto-play after 2 seconds
+setTimeout(() => {
+  if (autoPlay) scheduleAuto();
+}, 2000);
+</script>
+</body>
+</html>
