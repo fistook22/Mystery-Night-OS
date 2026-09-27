@@ -10,7 +10,7 @@ _Status: draft · last updated 2026-09-27_
 | 2026-09-27 | **Guest experience moves to a web app (PWA).** WhatsApp is no longer the gameplay channel. |
 | 2026-09-27 | **Sellable stories use fictional brands** ("skins"). Real-brand versions are private-use only. |
 | 2026-09-27 | **Voice is in V1, powered by NLPearl** (outbound calls + inbound suspect hotline). Twilio stays as fallback only. |
-| 2026-09-27 | **V1 launch story: "The Illustrator Heist"** (see `stories/voltkit-heist.md`). |
+| 2026-09-27 | **V1 launch story: "The Illustrator Heist"** (see `stories/illustrator-heist.md`). |
 
 ## Vision
 

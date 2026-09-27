@@ -10,18 +10,18 @@ The sellable edition is the default. The private edition may swap in real names 
 
 | Key | Sellable edition (default) | Private edition |
 |---|---|---|
-| `tcg` | Critterra TCG | Pokémon TCG |
-| `card` | Voltkit Illustrator | Pikachu Illustrator |
+| `tcg` | Wildlore TCG | Pokémon TCG |
+| `card` | Noctyra Illustrator | Pikachu Illustrator |
 | `grader` | SlabCert | PSA |
 | `photo_app` | Pixelgram | Instagram |
 | `stream_app` | Streamly | Twitch |
 | `chat_app` | Huddle | Discord |
 
-_"Critterra" and "Voltkit" are placeholders pending a trademark check._
+_"Wildlore" and "Noctyra" are placeholders pending a trademark check. The full creature set (Nightglass series) is in `marketing/commercial-15s/cards.js`; UV twist: genuine Noctyra prints have UV-reactive ink in the wing cells._
 
 ## Premise
 
-Tel Aviv, 21:00. It's a private preview party at the auction house **Hammer & Holo**. Tomorrow it sells the most famous card in the country: **Voltkit Illustrator, SlabCert GEM 10**. The card was a prize in a 1998 illustration contest, and only about 40 were ever printed. The estimate is ₪18–22M.
+Tel Aviv, 21:00. It's a private preview party at the auction house **Hammer & Holo**. Tomorrow it sells the most famous card in the country: **Noctyra Illustrator, SlabCert GEM 10**. The card was a prize in a 1998 illustration contest, and only about 40 were ever printed. The estimate is ₪18–22M.
 
 - **21:43:** the power goes out for **94 seconds**. When the lights return, the card is still in its sealed case.
 - **22:10:** the grading expert runs a UV test for the guests' photos. The card glows wrong. **It's a fake.**
@@ -42,7 +42,7 @@ Noa and Shira are accessories without criminal intent; they are red herrings wit
 
 | ID | Character | Pixelgram persona | Secret | Personal goal | Required? |
 |---|---|---|---|---|---|
-| `eitan` | Eitan Barak, owner | @voltkit_king (watches, slabs) | Debt; staged the theft | Get the blame onto Rotem | ✔ core |
+| `eitan` | Eitan Barak, owner | @noctyra_king (watches, slabs) | Debt; staged the theft | Get the blame onto Rotem | ✔ core |
 | `noa` | Noa Levi, grading expert | @noa.grades ("Slab Queen") | Made the replica slab | Stop anyone recovering her 20:10 story | ✔ core |
 | `yoni` | Yoni Barak, Eitan's brother, streamer | @YoniOpensPacks | His stream caught the swap and he didn't notice | Reach 100 "viewers" by getting players to do things on stream | ✔ core |
 | `gal` | Gal Peretz, 17, shop kid | @gal.flips | Took the real card; owes the loan shark | Not get caught, or cut a deal | ✔ core |
@@ -59,7 +59,7 @@ If a core role is unfilled, an AI character plays it on text and voice.
 | NPC | Voice/tone | Knows | Lies about / withholds | Admits under pressure |
 |---|---|---|---|---|
 | **Captain Nili Dagan**, police | Dry, funny, tired | Timeline of the blackout; fake confirmed at 22:10 | Nothing, but won't guess | Hints at the coat room if players mention the stream |
-| **Avner**, pawnbroker (Jaffa) | Fast talker, nervous | A teen called this morning asking what a Voltkit Illustrator is worth "hypothetically" | Says he "doesn't remember" the voice | "A kid, school bag, smelled like the shop's cleaning spray" |
+| **Avner**, pawnbroker (Jaffa) | Fast talker, nervous | A teen called this morning asking what a Noctyra Illustrator is worth "hypothetically" | Says he "doesn't remember" the voice | "A kid, school bag, smelled like the shop's cleaning spray" |
 | **Dafna Roth**, insurance adjuster | Polite, cold | Cover raised 3 weeks ago | Won't say by whom | "The policyholder requested it himself" |
 | **Kenji Mori** (if NPC) | Formal, sad | His father's story | — | Has no proof; is innocent |
 

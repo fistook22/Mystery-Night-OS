@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const FRAMES = [
   ['f1', '0:00–0:01.5', 'Incoming call'],
-  ['f2', '0:01.5–0:03', 'Live AI call'],
+  ['f2', '0:01.5–0:03', 'Live call + transcript'],
   ['f3', '0:03–0:05', 'The card'],
   ['f4', '0:05–0:06.5', 'Blackout'],
   ['f5', '0:06.5–0:08.5', 'UV: fake'],
@@ -22,9 +22,11 @@ const FRAMES = [
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   await page.goto('file://' + path.join(__dirname, 'frames.html'));
   await page.evaluate(() => document.fonts.ready);
-  for (const [id] of FRAMES) {
-    await page.locator('#' + id).screenshot({ path: path.join(out, `${id}.png`) });
-  }
+  page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
+  const shoot = async (id) => page.locator('#' + id).screenshot({ path: path.join(out, `${id}.png`) });
+  for (const [id] of FRAMES.slice(0, 7)) await shoot(id);
+  // f8 embeds the freshly rendered f1/f6/f7, so reload before shooting it
+  await page.reload(); await page.waitForTimeout(300); await shoot('f8');
   const tiles = FRAMES.map(([id, tc, label], i) => `
     <figure><img src="${id}.png"><figcaption><b>${i + 1}</b> ${tc} · ${label}</figcaption></figure>`).join('');
   fs.writeFileSync(path.join(out, 'sheet.html'), `<!doctype html><meta charset="utf-8">
@@ -33,7 +35,7 @@ const FRAMES = [
     .g{display:grid;grid-template-columns:repeat(4,360px);gap:30px}
     figure{margin:0}img{width:360px;height:640px;display:block;border-radius:14px;border:1px solid #333}
     figcaption{margin-top:10px}b{color:#ffd98a}</style>
-    <h1>Mystery Night: 15s commercial storyboard (option A, motion graphics)</h1><div class="g">${tiles}</div>`);
+    <h1>Mystery Night: 15s commercial storyboard v2 (option A, motion graphics)</h1><div class="g">${tiles}</div>`);
   const sheet = await browser.newPage({ viewport: { width: 1640, height: 1600 } });
   await sheet.goto('file://' + path.join(out, 'sheet.html'));
   await sheet.screenshot({ path: path.join(out, 'contact-sheet.png'), fullPage: true });
