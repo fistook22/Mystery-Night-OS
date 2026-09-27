@@ -29,7 +29,7 @@ const FPS = +(process.argv[2] || 30), FFMPEG = '/opt/pw-browsers/ffmpeg-1011/ffm
   fs.closeSync(fd);
   await browser.close();
   const r = spawnSync(FFMPEG, ['-y', '-hide_banner', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', MJPEG,
-    '-c:v', 'libvpx', '-b:v', '12M', '-crf', '6', '-qmin', '0', '-qmax', '24', '-deadline', 'good', '-cpu-used', '2', '-pix_fmt', 'yuv420p', OUT], { stdio: 'inherit' });
+    '-c:v', 'libvpx', '-b:v', '7M', '-crf', '8', '-qmin', '0', '-qmax', '30', '-deadline', 'good', '-cpu-used', '2', '-pix_fmt', 'yuv420p', OUT], { stdio: 'inherit' });
   if (r.status !== 0) throw new Error('ffmpeg failed: ' + r.status);
   fs.unlinkSync(MJPEG);
   console.log('wrote', OUT);
