@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Mystery Night — 15s storyboard frames</title>
+<style>
+:root{
+  --ink:#07080c; --panel:#12141c; --panel2:#1a1d28; --line:#262a38;
+  --text:#f3efe6; --muted:#8d91a0;
+  --gold:#e8b64a; --gold2:#ffd98a;
+  --red:#ff3b3b; --uv:#8a4dff; --uv2:#c9a8ff;
+  --volt:#3fe0c5; --spark:#ffe14a; --navy:#0f1b3d;
+  --px1:#8b5cf6; --px2:#22d3ee;          /* Pixelgram */
+  --st:#3dff8f;                           /* Streamly */
+  --ui:"Liberation Sans","DejaVu Sans","FreeSans",sans-serif;
+  --disp:"FreeSerif","Liberation Serif",serif;
+  --mono:"DejaVu Sans Mono","Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:var(--ui);color:var(--text)}
+.frame{width:1080px;height:1920px;position:relative;overflow:hidden;background:var(--ink);margin-bottom:40px}
+
+/* shared overlays */
+.grain::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vignette::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.75) 100%)}
+
+.status{position:absolute;top:0;left:0;right:0;height:110px;direction:ltr;display:flex;align-items:center;
+  justify-content:space-between;padding:34px 70px 0;font:600 40px var(--ui);z-index:20;color:var(--text)}
+.status .icons{display:flex;gap:18px;align-items:center}
+.bars{display:flex;gap:5px;align-items:flex-end;height:30px}
+.bars i{display:block;width:8px;background:currentColor;border-radius:2px}
+.batt{width:62px;height:30px;border:3px solid currentColor;border-radius:9px;position:relative;padding:3px}
+.batt::after{content:"";position:absolute;right:-9px;top:8px;width:5px;height:10px;background:currentColor;border-radius:0 3px 3px 0}
+.batt b{display:block;height:100%;width:22%;background:var(--red);border-radius:4px}
+
+.caption{position:absolute;left:0;right:0;bottom:170px;text-align:center;z-index:30;padding:0 60px}
+.caption span{display:inline-block;font:700 92px/1.1 var(--disp);color:var(--gold2);
+  text-shadow:0 0 40px rgba(232,182,74,.45),0 6px 0 rgba(0,0,0,.6)}
+.caption small{display:block;margin-top:18px;font:500 38px var(--ui);color:var(--muted);letter-spacing:1px}
+.brandtag{position:absolute;top:130px;right:60px;z-index:30;font:700 30px var(--ui);letter-spacing:6px;color:rgba(232,182,74,.75)}
+
+/* ─── F1 incoming call ─── */
+#f1{background:radial-gradient(ellipse at 50% 30%,#1b2140 0%,#0a0c16 55%,#05060a 100%)}
+.caller{position:absolute;top:300px;left:0;right:0;text-align:center}
+.caller .lbl{font:500 40px var(--ui);color:var(--muted)}
+.caller h1{font:700 104px var(--ui);margin-top:26px}
+.caller .sub{font:500 42px var(--ui);color:#b9bdd0;margin-top:18px}
+.avatar{width:330px;height:330px;border-radius:50%;margin:90px auto 0;position:relative;
+  background:linear-gradient(145deg,#27325f,#101634);display:grid;place-items:center;
+  box-shadow:0 0 0 3px rgba(255,255,255,.08)}
+.avatar svg{width:180px}
+.ring{position:absolute;inset:-40px;border-radius:50%;border:3px solid rgba(120,160,255,.35)}
+.ring.r2{inset:-95px;border-color:rgba(120,160,255,.18)}
+.ring.r3{inset:-160px;border-color:rgba(120,160,255,.07)}
+.callbtns{position:absolute;bottom:430px;left:150px;right:150px;display:flex;justify-content:space-between;direction:ltr}
+.cb{text-align:center;font:500 36px var(--ui);color:#cfd3e6}
+.cb .dot{width:190px;height:190px;border-radius:50%;display:grid;place-items:center;margin-bottom:22px}
+.cb.no .dot{background:#ff3b30}.cb.yes .dot{background:#30d158;box-shadow:0 0 70px rgba(48,209,88,.55)}
+.cb svg{width:90px}
+.slide{position:absolute;bottom:330px;left:0;right:0;text-align:center;font:500 34px var(--ui);color:var(--muted)}
+
+/* ─── F2 live call ─── */
+#f2{background:radial-gradient(ellipse at 50% 25%,#16203f 0%,#070910 60%)}
+.livecall{position:absolute;top:210px;left:0;right:0;text-align:center}
+.livecall .mini{width:170px;height:170px;border-radius:50%;margin:0 auto;background:linear-gradient(145deg,#27325f,#101634);display:grid;place-items:center}
+.livecall .mini svg{width:95px}
+.livecall h2{font:700 64px var(--ui);margin-top:30px}
+.livecall .timer{font:500 44px var(--mono);color:#30d158;margin-top:14px;direction:ltr}
+.aibadge{display:inline-block;margin-top:26px;padding:10px 26px;border-radius:40px;border:2px solid rgba(232,182,74,.5);
+  color:var(--gold);font:600 30px var(--ui)}
+.wave{position:absolute;top:760px;left:90px;right:90px;height:260px;display:flex;align-items:center;justify-content:center;gap:12px;direction:ltr}
+.wave i{display:block;width:16px;border-radius:10px;background:linear-gradient(#7fb0ff,#3d5dff)}
+.subtitle{position:absolute;top:1120px;left:90px;right:90px;text-align:center;
+  font:700 78px/1.25 var(--ui);color:#fff}
+.subtitle q{quotes:"״" "״"}
+.subtitle .who{display:block;font:500 34px var(--ui);color:var(--muted);margin-bottom:22px}
+
+/* ─── F3 card in case ─── */
+#f3{background:radial-gradient(ellipse at 50% 42%,#3a2a12 0%,#140e07 38%,#050403 75%)}
+.spot{position:absolute;top:-200px;left:240px;width:600px;height:1400px;
+  background:linear-gradient(180deg,rgba(255,230,170,.28),rgba(255,230,170,0) 85%);
+  clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);filter:blur(8px)}
+.case{position:absolute;top:360px;left:210px;width:660px;height:1000px;border-radius:14px;
+  border:3px solid rgba(255,255,255,.18);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 40%,rgba(255,255,255,.07));
+  box-shadow:inset 0 0 80px rgba(255,255,255,.05),0 60px 120px rgba(0,0,0,.8)}
+.case::after{content:"";position:absolute;top:0;left:60px;width:120px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:skewX(-12deg)}
+.plinth{position:absolute;top:1360px;left:170px;width:740px;height:120px;background:linear-gradient(#2a1e10,#120c06);border-radius:0 0 10px 10px}
+.plaque{position:absolute;top:1395px;left:0;right:0;text-align:center;font:700 34px var(--ui);color:var(--gold);letter-spacing:2px}
+
+.slab{position:absolute;top:430px;left:290px;width:500px;height:840px;border-radius:26px;
+  background:linear-gradient(160deg,rgba(255,255,255,.28),rgba(255,255,255,.08));border:4px solid rgba(255,255,255,.45);padding:22px;
+  box-shadow:0 0 90px rgba(255,217,138,.25)}
+.slabel{height:130px;border-radius:12px;background:linear-gradient(#fdfbf5,#e9e3d3);color:#1a1a1a;direction:ltr;
+  display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-family:var(--ui)}
+.slabel .l{font:700 22px var(--ui);line-height:1.35}
+.slabel .l em{font-style:normal;color:#b3261e}
+.slabel .g{text-align:center;font:900 26px var(--ui);color:#b3261e;line-height:1}
+.slabel .g b{display:block;font-size:64px}
+.card{margin-top:22px;height:640px;border-radius:18px;position:relative;overflow:hidden;
+  background:conic-gradient(from 200deg,#ffe14a,#ff9b3d,#ff5fa2,#8b5cf6,#22d3ee,#3fe0c5,#ffe14a);padding:14px}
+.cardin{height:100%;border-radius:10px;background:linear-gradient(#fff6d6,#f3e3a8);position:relative;overflow:hidden;direction:ltr}
+.cname{display:flex;justify-content:space-between;padding:12px 16px 6px;font:700 30px var(--ui);color:#2a2410}
+.cname span:last-child{color:#b3261e}
+.cart{margin:0 16px;height:330px;border-radius:6px;border:4px solid #c9a43a;
+  background:radial-gradient(circle at 50% 60%,#fff3b0,#ffcf5a 45%,#e38b2c);position:relative;overflow:hidden}
+.cart svg{position:absolute;left:50%;top:52%;width:300px;transform:translate(-50%,-50%)}
+.cart::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 45%,transparent 60%)}
+.illus{margin:16px 16px 0;padding:10px;border-radius:6px;background:#1c1a14;color:#ffd98a;text-align:center;font:700 26px var(--ui);letter-spacing:6px}
+.cdesc{padding:12px 20px;font:500 19px/1.4 var(--ui);color:#5b4f2c;text-align:center}
+.cfoot{position:absolute;bottom:10px;left:16px;right:16px;display:flex;justify-content:space-between;font:600 16px var(--mono);color:#7a6a3a}
+
+/* ─── F4 blackout ─── */
+#f4{background:#020203}
+#f4 .ghost{position:absolute;top:360px;left:210px;width:660px;height:1000px;border-radius:14px;border:3px solid rgba(255,255,255,.05)}
+#f4 .ghostslab{position:absolute;top:430px;left:290px;width:500px;height:840px;border-radius:26px;border:3px solid rgba(255,255,255,.04);
+  box-shadow:0 0 60px rgba(255,217,138,.04)}
+.hand{position:absolute;top:860px;left:-40px;width:560px;opacity:.55}
+.cam{position:absolute;top:140px;left:60px;right:60px;display:flex;justify-content:space-between;direction:ltr;
+  font:600 34px var(--mono);color:rgba(255,255,255,.55)}
+.cam .rec{color:var(--red)}
+.cam .rec::before{content:"●  "}
+.count{position:absolute;top:620px;left:0;right:0;text-align:center;direction:ltr}
+.count b{display:block;font:700 380px/1 var(--mono);color:var(--red);text-shadow:0 0 60px rgba(255,59,59,.6),0 0 160px rgba(255,59,59,.3)}
+.count span{display:block;font:600 40px var(--mono);color:rgba(255,59,59,.7);letter-spacing:14px;margin-top:10px}
+.scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 6px);z-index:4}
+.glitch{position:absolute;left:0;right:0;height:14px;background:rgba(255,255,255,.08);z-index:4}
+
+/* ─── F5 UV fake ─── */
+#f5{background:radial-gradient(ellipse at 50% 45%,#1d0b3d 0%,#07030f 65%)}
+.uvbeam{position:absolute;top:-100px;right:-150px;width:1100px;height:1700px;
+  background:linear-gradient(200deg,rgba(138,77,255,.55),rgba(138,77,255,.05) 80%);
+  clip-path:polygon(85% 0,100% 6%,40% 100%,0 80%);filter:blur(10px);z-index:1}
+.torch{position:absolute;top:120px;right:40px;width:170px;height:380px;transform:rotate(38deg);z-index:6;
+  background:linear-gradient(90deg,#1a1a1f,#3a3a44,#1a1a1f);border-radius:20px}
+.torch::before{content:"";position:absolute;bottom:-18px;left:10px;right:10px;height:40px;border-radius:50%;background:#c9a8ff;box-shadow:0 0 60px #8a4dff}
+#f5 .slab{z-index:3;background:linear-gradient(160deg,rgba(201,168,255,.30),rgba(138,77,255,.08));border-color:rgba(201,168,255,.7);box-shadow:0 0 120px rgba(138,77,255,.5)}
+#f5 .slabel{background:linear-gradient(#e9dcff,#c7b0ff)}
+.uvcard{margin-top:22px;height:640px;border-radius:18px;background:#1a0b33;position:relative;overflow:hidden;border:3px solid #6b3dd6}
+.uvcard .glow{position:absolute;inset:0;background:
+  repeating-linear-gradient(115deg,rgba(201,168,255,.0) 0 26px,rgba(201,168,255,.5) 26px 30px),
+  radial-gradient(circle at 50% 40%,rgba(120,255,230,.55),transparent 55%)}
+.uvcard svg{position:absolute;left:50%;top:40%;width:300px;transform:translate(-50%,-50%);opacity:.55;filter:drop-shadow(0 0 18px #7cffe8)}
+.uvcard .noink{position:absolute;bottom:80px;left:0;right:0;text-align:center;direction:ltr;font:700 22px var(--mono);color:#ff8fa3;letter-spacing:0}
+.stamp{position:absolute;top:700px;left:130px;z-index:8;transform:rotate(-14deg);
+  border:14px solid var(--red);border-radius:24px;padding:10px 60px;color:var(--red);font:900 210px/1.05 var(--disp);
+  text-shadow:0 0 30px rgba(255,59,59,.5);box-shadow:0 0 60px rgba(255,59,59,.35),inset 0 0 40px rgba(255,59,59,.25);background:rgba(20,0,0,.35)}
+
+/* ─── App shells ─── */
+.app{position:absolute;inset:0;background:#0b0c11}
+.apphead{position:absolute;top:110px;left:0;right:0;height:120px;display:flex;align-items:center;justify-content:space-between;padding:0 50px;border-bottom:1px solid var(--line)}
+.logo-px{font:700 60px var(--disp);background:linear-gradient(90deg,var(--px1),var(--px2));-webkit-background-clip:text;color:transparent;direction:ltr}
+.logo-st{font:900 56px var(--ui);color:var(--st);direction:ltr;letter-spacing:-1px}
+.logo-st i{font-style:normal;color:#fff}
+.headicons{display:flex;gap:34px;direction:ltr}
+.headicons span{width:54px;height:54px;border:4px solid #e9e9f0;border-radius:14px;display:block;opacity:.85}
+.headicons span.c{border-radius:50%}
+
+/* ─── F6 Pixelgram story ─── */
+#f6 .story{position:absolute;top:110px;left:24px;right:24px;bottom:210px;border-radius:34px;overflow:hidden;background:#15110d}
+.bars6{position:absolute;top:26px;left:26px;right:26px;display:flex;gap:10px;direction:ltr;z-index:5}
+.bars6 i{flex:1;height:7px;border-radius:4px;background:rgba(255,255,255,.35)}
+.bars6 i.done{background:#fff}.bars6 i.half{background:linear-gradient(90deg,#fff 55%,rgba(255,255,255,.35) 55%)}
+.sthead{position:absolute;top:60px;left:30px;right:30px;display:flex;align-items:center;gap:22px;direction:ltr;z-index:5}
+.sthead .pp{width:100px;height:100px;border-radius:50%;padding:5px;background:linear-gradient(135deg,var(--px1),var(--px2))}
+.sthead .pp div{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#f5c6a5,#b77458);border:4px solid #111;display:grid;place-items:center;font:700 40px var(--ui);color:#3a1d10}
+.sthead .nm{font:700 42px var(--ui)}
+.sthead .nm small{font:500 34px var(--ui);color:rgba(255,255,255,.7);margin-left:14px}
+.recovered{position:absolute;top:200px;left:50%;transform:translateX(-50%);z-index:6;white-space:nowrap;
+  background:rgba(255,59,59,.92);color:#fff;font:700 36px var(--ui);padding:14px 34px;border-radius:40px;box-shadow:0 10px 40px rgba(255,59,59,.4)}
+.desk{position:absolute;inset:0;
+  background:radial-gradient(circle at 70% 18%,rgba(255,240,220,.35),transparent 30%),
+             linear-gradient(180deg,#2b2320 0%,#231b16 42%,#4a2f1c 42.2%,#3a2415 100%)}
+.ringlight{position:absolute;top:300px;right:70px;width:220px;height:220px;border-radius:50%;border:26px solid rgba(255,248,235,.9);box-shadow:0 0 90px rgba(255,248,235,.7)}
+.printer{position:absolute;top:940px;right:110px;width:380px;height:250px;border-radius:26px;background:linear-gradient(#e8e8ea,#b9bbc2);box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.printer::before{content:"";position:absolute;top:40px;left:40px;right:40px;height:16px;border-radius:8px;background:#222}
+.printlabel{position:absolute;top:720px;right:160px;width:280px;height:170px;background:linear-gradient(#fffdf7,#efe8d6);border-radius:6px;transform:rotate(-3deg);
+  direction:ltr;padding:16px 18px;color:#1a1a1a;font:700 22px/1.35 var(--ui);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.printlabel em{font-style:normal;color:#b3261e;font-size:38px;display:block}
+.emptyslab{position:absolute;width:240px;height:390px;border-radius:20px;border:5px solid rgba(255,255,255,.55);
+  background:linear-gradient(160deg,rgba(255,255,255,.25),rgba(255,255,255,.04));box-shadow:0 30px 50px rgba(0,0,0,.5)}
+.emptyslab::before{content:"";position:absolute;top:14px;left:14px;right:14px;height:60px;border-radius:6px;background:rgba(255,255,255,.55)}
+.tweezer{position:absolute;top:1150px;left:120px;width:420px;height:12px;background:linear-gradient(90deg,#999,#eee,#888);transform:rotate(-18deg);border-radius:6px}
+.mug{position:absolute;top:990px;left:90px;width:170px;height:190px;border-radius:0 0 30px 30px;background:linear-gradient(90deg,#1f3b5a,#2c5680)}
+.mug::after{content:"";position:absolute;right:-50px;top:40px;width:70px;height:90px;border:16px solid #2c5680;border-radius:50%}
+.sticker{position:absolute;top:470px;left:70px;z-index:5;transform:rotate(-5deg);background:#fff;color:#111;
+  font:700 54px var(--ui);padding:16px 30px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.sticker2{position:absolute;top:590px;left:130px;z-index:5;transform:rotate(3deg);background:linear-gradient(90deg,var(--px1),var(--px2));color:#fff;
+  font:700 40px var(--ui);padding:12px 26px;border-radius:12px}
+.evid{position:absolute;bottom:250px;left:60px;right:60px;z-index:6;display:flex;gap:20px}
+.evid div{flex:1;text-align:center;padding:26px 0;border-radius:24px;font:700 38px var(--ui);background:rgba(15,15,20,.78);border:2px solid rgba(255,255,255,.2)}
+.evid div.pri{background:var(--gold);color:#1a1205;border-color:var(--gold)}
+.reply{position:absolute;bottom:60px;left:60px;right:60px;height:110px;border-radius:60px;border:3px solid rgba(255,255,255,.35);
+  display:flex;align-items:center;padding:0 40px;font:500 36px var(--ui);color:rgba(255,255,255,.6)}
+
+/* ─── F7 Streamly ─── */
+.player{position:absolute;top:230px;left:0;right:0;height:608px;background:#050507;overflow:hidden}
+.scene{position:absolute;inset:0;background:
+   radial-gradient(ellipse at 62% 45%,rgba(255,217,138,.22),transparent 28%),
+   radial-gradient(ellipse at 20% 70%,rgba(80,110,255,.10),transparent 40%),
+   linear-gradient(#0b0b10,#050507)}
+.minicase{position:absolute;top:170px;left:560px;width:190px;height:290px;border:3px solid rgba(255,255,255,.18);border-radius:8px;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.01))}
+.minicase::after{content:"";position:absolute;top:40px;left:45px;width:100px;height:160px;border-radius:6px;background:rgba(255,217,138,.35);box-shadow:0 0 40px rgba(255,217,138,.35)}
+.silh{position:absolute;bottom:-20px;width:190px;height:330px;border-radius:95px 95px 0 0;background:#0e0e14}
+.silh::before{content:"";position:absolute;top:-110px;left:45px;width:100px;height:100px;border-radius:50%;background:#0e0e14}
+.phand{position:absolute;top:260px;left:250px;width:360px;transform:rotate(-8deg)}
+.circle{position:absolute;top:220px;left:360px;width:280px;height:200px;border:6px solid var(--red);border-radius:50%;transform:rotate(-8deg);box-shadow:0 0 20px rgba(255,59,59,.5)}
+.ptop{position:absolute;top:22px;left:22px;right:22px;display:flex;justify-content:space-between;direction:ltr;font:700 30px var(--ui)}
+.vod{background:rgba(0,0,0,.7);padding:8px 18px;border-radius:8px}
+.tc{background:rgba(0,0,0,.7);padding:8px 18px;border-radius:8px;font-family:var(--mono);color:var(--st)}
+.scrub{position:absolute;bottom:26px;left:30px;right:30px;height:10px;border-radius:5px;background:rgba(255,255,255,.25);direction:ltr}
+.scrub b{position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--st);border-radius:5px}
+.scrub i{position:absolute;left:62%;top:-11px;width:32px;height:32px;border-radius:50%;background:#fff;transform:translateX(-50%)}
+.scrub u{position:absolute;left:62%;top:-44px;transform:translateX(-50%);font:700 22px var(--mono);color:var(--red);text-decoration:none}
+.chan{position:absolute;top:860px;left:40px;right:40px;display:flex;align-items:center;gap:24px}
+.chan .av{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--st),#138a4a);display:grid;place-items:center;font:900 44px var(--ui);color:#062611;direction:ltr}
+.chan h3{font:700 44px var(--ui);direction:ltr;text-align:right}
+.chan p{font:500 32px var(--ui);color:var(--muted);margin-top:6px}
+.chan .views{margin-right:auto;font:700 32px var(--ui);color:var(--st);direction:ltr}
+.chat{position:absolute;top:1010px;left:0;right:0;bottom:210px;border-top:1px solid var(--line);padding:26px 44px;display:flex;flex-direction:column;gap:22px;overflow:hidden}
+.chat .hd{font:700 30px var(--ui);color:var(--muted);letter-spacing:3px}
+.msg{font:500 40px/1.35 var(--ui)}
+.msg .u{font-weight:700;margin-left:14px;direction:ltr;unicode-bidi:isolate}
+.msg .t{font:500 28px var(--mono);color:#5d6272;margin-left:14px;direction:ltr;unicode-bidi:isolate}
+.msg.hl{background:rgba(255,59,59,.14);border:3px solid var(--red);border-radius:22px;padding:20px 24px;position:relative}
+.msg.hl .pin{position:absolute;top:-26px;left:30px;background:var(--red);color:#fff;font:700 26px var(--ui);padding:6px 18px;border-radius:20px}
+
+/* ─── F8 end card ─── */
+#f8{background:radial-gradient(ellipse at 50% 40%,#231a0a 0%,#0a0805 55%,#030302 100%)}
+.phones{position:absolute;top:250px;left:0;right:0;height:760px}
+.ph{position:absolute;width:300px;height:620px;border-radius:44px;border:8px solid #2a2a33;background:#0b0c11;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.7)}
+.ph.a{left:90px;top:120px;transform:rotate(-12deg)}
+.ph.b{left:390px;top:40px;z-index:2;box-shadow:0 0 80px rgba(232,182,74,.35),0 40px 80px rgba(0,0,0,.7)}
+.ph.c{left:690px;top:120px;transform:rotate(12deg)}
+.ph .scr{position:absolute;inset:0}
+.logo{position:absolute;top:1080px;left:0;right:0;text-align:center}
+.logo .mk{width:150px;height:150px;margin:0 auto 26px;border-radius:36px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#2a1f0c,#0e0b05);border:3px solid rgba(232,182,74,.6);box-shadow:0 0 60px rgba(232,182,74,.3)}
+.logo h1{font:700 118px/1 var(--disp);color:var(--gold2);letter-spacing:4px;direction:ltr;text-shadow:0 0 50px rgba(232,182,74,.4)}
+.logo h2{font:700 66px var(--ui);margin-top:36px}
+.logo p{font:500 42px var(--ui);color:#c7c2b4;margin-top:22px}
+.cta{position:absolute;bottom:200px;left:150px;right:150px;text-align:center;padding:38px 0;border-radius:80px;
+  background:linear-gradient(90deg,#e8b64a,#ffd98a);color:#1a1205;font:700 52px var(--ui);box-shadow:0 20px 60px rgba(232,182,74,.35)}
+.fine{position:absolute;bottom:120px;left:0;right:0;text-align:center;font:500 30px var(--ui);color:#6f6a5e}
+</style>
+</head>
+<body>
+
+<!-- Reusable art -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Voltkit: fictional electric fox kit (sellable-edition mascot) -->
+    <symbol id="voltkit" viewBox="0 0 200 200">
+      <polygon points="118,158 170,112 148,110 188,56 126,102 150,104 108,146" fill="#ffe14a" stroke="#0f1b3d" stroke-width="5" stroke-linejoin="round"/>
+      <ellipse cx="98" cy="140" rx="40" ry="42" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="5"/>
+      <ellipse cx="98" cy="150" rx="22" ry="26" fill="#eafff9"/>
+      <polygon points="58,74 50,14 90,58" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="5" stroke-linejoin="round"/>
+      <polygon points="64,64 58,30 80,56" fill="#0f1b3d"/>
+      <polygon points="110,56 144,12 136,76" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="5" stroke-linejoin="round"/>
+      <polygon points="118,56 138,30 132,66" fill="#0f1b3d"/>
+      <ellipse cx="96" cy="86" rx="44" ry="36" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="5"/>
+      <ellipse cx="90" cy="102" rx="22" ry="14" fill="#eafff9"/>
+      <ellipse cx="80" cy="97" rx="6" ry="5" fill="#0f1b3d"/>
+      <ellipse cx="78" cy="80" rx="7" ry="9" fill="#0f1b3d"/><circle cx="80" cy="77" r="2.6" fill="#fff"/>
+      <ellipse cx="110" cy="80" rx="7" ry="9" fill="#0f1b3d"/><circle cx="112" cy="77" r="2.6" fill="#fff"/>
+      <polygon points="96,52 88,66 96,66 90,78 104,62 96,62 102,52" fill="#ffe14a" stroke="#0f1b3d" stroke-width="2"/>
+      <ellipse cx="78" cy="180" rx="14" ry="8" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="4"/>
+      <ellipse cx="118" cy="180" rx="14" ry="8" fill="#3fe0c5" stroke="#0f1b3d" stroke-width="4"/>
+    </symbol>
+    <symbol id="badge" viewBox="0 0 100 100">
+      <path d="M50 6 L86 20 V48 C86 72 70 88 50 95 C30 88 14 72 14 48 V20 Z" fill="#e8b64a" stroke="#fff3cf" stroke-width="3"/>
+      <path d="M50 30 l6 13 14 2 -10 10 2 14 -12 -7 -12 7 2 -14 -10 -10 14 -2 z" fill="#101634"/>
+    </symbol>
+    <symbol id="handwatch" viewBox="0 0 400 200">
+      <path d="M0 110 C60 95 120 92 170 96 L250 70 C270 64 290 70 300 80 L360 80 C380 80 385 100 365 104 L300 108 L360 120 C380 124 376 144 356 142 L290 136 C270 150 240 156 210 152 L0 170 Z" fill="#1a1a22"/>
+      <rect x="140" y="88" width="46" height="76" rx="10" fill="#c9a24a"/>
+      <circle cx="163" cy="126" r="20" fill="#f3e3b0" stroke="#8a6a1e" stroke-width="4"/>
+      <line x1="163" y1="126" x2="163" y2="112" stroke="#222" stroke-width="3"/><line x1="163" y1="126" x2="174" y2="130" stroke="#222" stroke-width="3"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- F1 · 0:00–0:01.5 · Incoming call -->
+<section class="frame grain" id="f1">
+  <div class="status"><span>22:16</span><span class="icons"><span class="bars"><i style="height:10px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:30px"></i></span><span class="batt"><b></b></span></span></div>
+  <div class="caller">
+    <div class="lbl">שיחה נכנסת…</div>
+    <div class="avatar"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><svg viewBox="0 0 100 100"><use href="#badge"/></svg></div>
+    <h1>פקד נילי דגן</h1>
+    <div class="sub">יחידת חקירות · תיק 2143</div>
+  </div>
+  <div class="callbtns">
+    <div class="cb no"><div class="dot"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1 0-1.36C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.72c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></div>דחייה</div>
+    <div class="cb yes"><div class="dot"><svg viewBox="0 0 24 24"><path fill="#fff" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>מענה</div>
+  </div>
+  <div class="caption"><span>הטלפון שלך מצלצל.</span></div>
+</section>
+
+<!-- F2 · 0:01.5–0:03 · Live AI call -->
+<section class="frame grain" id="f2">
+  <div class="status"><span>22:16</span><span class="icons"><span class="bars"><i style="height:10px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:30px"></i></span><span class="batt"><b></b></span></span></div>
+  <div class="livecall">
+    <div class="mini"><svg viewBox="0 0 100 100"><use href="#badge"/></svg></div>
+    <h2>פקד נילי דגן</h2>
+    <div class="timer">00:03</div>
+    <div class="aibadge">דמות חיה · עונה לכל מה שתגידו</div>
+  </div>
+  <div class="wave" id="wave"></div>
+  <div class="subtitle"><span class="who">נילי:</span>״ערב טוב.<br>איפה היית ב־21:43?״</div>
+  <div class="caption"><span>זו לא הקלטה.</span></div>
+</section>
+
+<!-- F3 · 0:03–0:05 · The card -->
+<section class="frame grain vignette" id="f3">
+  <div class="spot"></div>
+  <div class="case"></div>
+  <div class="slab">
+    <div class="slabel">
+      <div class="l">1998 CRITTERRA · PROMO<br>VOLTKIT <em>ILLUSTRATOR</em><br>SLABCERT #48213307</div>
+      <div class="g">GEM MT<b>10</b></div>
+    </div>
+    <div class="card"><div class="cardin">
+      <div class="cname"><span>Voltkit</span><span>60 HP</span></div>
+      <div class="cart"><svg viewBox="0 0 200 200"><use href="#voltkit"/></svg></div>
+      <div class="illus">✎ ILLUSTRATOR</div>
+      <div class="cdesc">Awarded to the winners of the 1998 Critterra Illustration Contest.</div>
+      <div class="cfoot"><span>No. 001/040</span><span>©1998</span></div>
+    </div></div>
+  </div>
+  <div class="plinth"></div>
+  <div class="plaque">HAMMER &amp; HOLO · הערכה ₪20,000,000</div>
+  <div class="brandtag">MYSTERY NIGHT</div>
+  <div class="caption"><span>קלף אחד. 20 מיליון ₪.</span></div>
+</section>
+
+<!-- F4 · 0:05–0:06.5 · Blackout -->
+<section class="frame vignette" id="f4">
+  <div class="scan"></div>
+  <div class="glitch" style="top:540px"></div><div class="glitch" style="top:1310px;height:6px"></div>
+  <div class="cam"><span class="rec">REC</span><span>CAM 03 · 21:43:07</span></div>
+  <div class="ghost"></div><div class="ghostslab"></div>
+  <svg class="hand" viewBox="0 0 400 200"><use href="#handwatch"/></svg>
+  <div class="count"><b>94</b><span>SECONDS · שניות</span></div>
+  <div class="caption"><span>94 שניות של חושך.</span></div>
+</section>
+
+<!-- F5 · 0:06.5–0:08.5 · UV reveal: fake -->
+<section class="frame grain vignette" id="f5">
+  <div class="uvbeam"></div>
+  <div class="torch"></div>
+  <div class="slab">
+    <div class="slabel">
+      <div class="l">1998 CRITTERRA · PROMO<br>VOLTKIT <em>ILLUSTRATOR</em><br>SLABCERT #48213307</div>
+      <div class="g">GEM MT<b>10</b></div>
+    </div>
+    <div class="uvcard"><div class="glow"></div><svg viewBox="0 0 200 200"><use href="#voltkit"/></svg>
+      <div class="noink">UV SECURITY INK: NOT FOUND</div></div>
+  </div>
+  <div class="stamp">מזויף</div>
+  <div class="caption"><span>…והקלף מזויף.</span></div>
+</section>
+
+<!-- F6 · 0:08.5–0:10.5 · Pixelgram recovered story -->
+<section class="frame" id="f6">
+  <div class="status"><span>22:31</span><span class="icons"><span class="bars"><i style="height:10px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:30px"></i></span><span class="batt"><b></b></span></span></div>
+  <div class="story">
+    <div class="desk"></div>
+    <div class="ringlight"></div>
+    <div class="emptyslab" style="top:620px;left:120px;transform:rotate(-6deg)"></div>
+    <div class="emptyslab" style="top:600px;left:390px;transform:rotate(4deg)"></div>
+    <div class="printlabel">SLABCERT #48213307<em>GEM MT 10</em>VOLTKIT ILLUSTRATOR</div>
+    <div class="printer"></div>
+    <div class="mug"></div>
+    <div class="tweezer"></div>
+    <div class="bars6"><i class="done"></i><i class="done"></i><i class="half"></i><i></i></div>
+    <div class="sthead"><div class="pp"><div>N</div></div><div class="nm">noa.grades<small>20:10</small></div></div>
+    <div class="recovered">⟲ סטורי שנמחק · שוחזר</div>
+    <div class="sticker">עבודת לילה 🤫</div>
+    <div class="sticker2">רפליקה ״לתצוגה״ בלבד</div>
+    <div class="evid"><div class="pri">📌 שמור כראיה</div><div>שתף עם השולחן</div></div>
+    <div class="reply">שליחת הודעה ל־noa.grades…</div>
+  </div>
+  <div class="caption" style="bottom:70px"><span style="font-size:80px">לכל חשוד יש טלפון.</span></div>
+</section>
+
+<!-- F7 · 0:10.5–0:12.5 · Streamly VOD + chat -->
+<section class="frame" id="f7">
+  <div class="app">
+    <div class="status"><span>22:38</span><span class="icons"><span class="bars"><i style="height:10px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:30px"></i></span><span class="batt"><b></b></span></span></div>
+    <div class="apphead"><div class="logo-st">stream<i>ly</i></div><div class="headicons"><span class="c"></span><span></span></div></div>
+    <div class="player">
+      <div class="scene"></div>
+      <div class="silh" style="left:80px"></div><div class="silh" style="left:840px;height:300px"></div>
+      <div class="minicase"></div>
+      <svg class="phand" viewBox="0 0 400 200"><use href="#handwatch"/></svg>
+      <div class="circle"></div>
+      <div class="ptop"><span class="vod">▶ הקלטה</span><span class="tc">21:43:07</span></div>
+      <div class="scrub"><b></b><i></i><u>21:43</u></div>
+    </div>
+    <div class="chan"><div class="av">YO</div><div><h3>YoniOpensPacks</h3><p>מסיבת פריוויו 🔥 הקלף של אחי!!</p></div><div class="views">👁 1,284</div></div>
+    <div class="chat">
+      <div class="hd">צ׳אט · הקלטה</div>
+      <div class="msg"><span class="t">21:43</span><span class="u" style="color:#ff9bd2">slabdaddy</span>האורות כבו?? 😱</div>
+      <div class="msg"><span class="t">21:43</span><span class="u" style="color:#8fd3ff">tlv_flipper</span>תעצרו על 21:43 ותסתכלו על היד. על השעון.</div>
+      <div class="msg"><span class="t">21:47</span><span class="u" style="color:#ffd98a">yoni_stan</span>יוני תסתכל אחורה!!!</div>
+      <div class="msg hl"><span class="pin">📌 נשמר כראיה</span><span class="t">21:51</span><span class="u" style="color:#ff6b6b">shadowmod</span>יו מי זה בחדר המעילים??</div>
+    </div>
+  </div>
+  <div class="caption" style="bottom:70px"><span style="font-size:80px">כולם משקרים. חוץ מהראיות.</span></div>
+</section>
+
+<!-- F8 · 0:12.5–0:15 · End card -->
+<section class="frame grain vignette" id="f8">
+  <div class="phones">
+    <div class="ph a"><div class="scr" style="background:radial-gradient(ellipse at 50% 30%,#1b2140,#05060a)">
+      <svg viewBox="0 0 100 100" style="width:120px;position:absolute;top:150px;left:82px"><use href="#badge"/></svg>
+      <div style="position:absolute;top:310px;left:0;right:0;text-align:center;font:700 34px var(--ui)">נילי דגן</div>
+      <div style="position:absolute;bottom:70px;left:40px;width:80px;height:80px;border-radius:50%;background:#ff3b30"></div>
+      <div style="position:absolute;bottom:70px;right:40px;width:80px;height:80px;border-radius:50%;background:#30d158"></div></div></div>
+    <div class="ph b"><div class="scr" style="background:linear-gradient(180deg,#2b2320 0%,#231b16 45%,#4a2f1c 45%)">
+      <div style="position:absolute;top:24px;left:18px;right:18px;display:flex;gap:6px"><i style="flex:1;height:5px;background:#fff;border-radius:3px"></i><i style="flex:1;height:5px;background:#fff;border-radius:3px"></i><i style="flex:1;height:5px;background:rgba(255,255,255,.4);border-radius:3px"></i></div>
+      <div style="position:absolute;top:70px;left:0;right:0;text-align:center;font:900 44px var(--disp);background:linear-gradient(90deg,#8b5cf6,#22d3ee);-webkit-background-clip:text;color:transparent">Pixelgram</div>
+      <div style="position:absolute;top:150px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#ff3b3b;color:#fff;font:700 22px var(--ui);padding:8px 18px;border-radius:20px">⟲ שוחזר</div>
+      <div style="position:absolute;top:260px;left:40px;width:100px;height:170px;border-radius:12px;border:3px solid rgba(255,255,255,.6);background:rgba(255,255,255,.12)"></div>
+      <div style="position:absolute;top:250px;right:40px;width:110px;height:80px;background:#fffdf7;border-radius:4px;color:#b3261e;font:900 30px var(--ui);display:grid;place-items:center;direction:ltr">GEM 10</div></div></div>
+    <div class="ph c"><div class="scr" style="background:#0b0c11">
+      <div style="position:absolute;top:40px;left:0;right:0;text-align:center;font:900 40px var(--ui);color:#3dff8f;direction:ltr">stream<span style="color:#fff">ly</span></div>
+      <div style="position:absolute;top:110px;left:0;right:0;height:180px;background:radial-gradient(ellipse at 60% 50%,rgba(255,217,138,.3),#050507 60%)"></div>
+      <div style="position:absolute;top:330px;left:20px;right:20px;border:3px solid #ff3b3b;border-radius:14px;padding:14px;font:600 24px/1.4 var(--ui);background:rgba(255,59,59,.14)">יו מי זה בחדר המעילים??</div></div></div>
+  </div>
+  <div class="logo">
+    <div class="mk"><svg viewBox="0 0 100 100" width="96"><circle cx="42" cy="42" r="26" fill="none" stroke="#ffd98a" stroke-width="8"/><line x1="61" y1="61" x2="86" y2="86" stroke="#ffd98a" stroke-width="10" stroke-linecap="round"/><path d="M40 28 l-8 16 h10 l-6 14" fill="none" stroke="#ffe14a" stroke-width="5" stroke-linejoin="round"/></svg></div>
+    <h1>MYSTERY NIGHT</h1>
+    <h2>הבית שלך. זירת הפשע.</h2>
+    <p>הדמויות מתקשרות. משקרות. מפרסמות.</p>
+  </div>
+  <div class="cta">הצטרפו לרשימת ההמתנה</div>
+  <div class="fine">ערב תעלומה לחברים · 6–10 משתתפים · קישור בביו</div>
+</section>
+
+<script>
+  // Deterministic waveform for F2
+  const w = document.getElementById('wave');
+  const hs = [30,60,110,170,220,160,90,140,240,200,120,70,150,230,180,100,60,120,190,140,80,40,70,30];
+  w.innerHTML = hs.map(h => `<i style="height:${h}px"></i>`).join('');
+</script>
+</body>
+</html>
