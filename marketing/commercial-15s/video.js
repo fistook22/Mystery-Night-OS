@@ -7,8 +7,7 @@ const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const FPS = +(process.argv[2] || 30), DUR = 15, FFMPEG = '/opt/pw-browsers/ffmpeg-1011/ffmpeg-linux';
-const OUT = path.join(__dirname, 'out', 'commercial-15s.webm');
+const FPS = +(process.argv[2] || 30), FFMPEG = '/opt/pw-browsers/ffmpeg-1011/ffmpeg-linux';
 
 (async () => {
   const MJPEG = path.join(__dirname, 'out', 'frames.mjpeg');
@@ -18,7 +17,9 @@ const OUT = path.join(__dirname, 'out', 'commercial-15s.webm');
   page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
   await page.goto('file://' + path.join(__dirname, 'frames.html') + '?video');
   await page.waitForTimeout(500);
-  const N = FPS * DUR;
+  const DUR = await page.evaluate(() => window.DURATION || 15);
+  const OUT = path.join(__dirname, 'out', `commercial-${DUR}s.webm`);
+  const N = Math.round(FPS * DUR);
   for (let i = 0; i < N; i++) {
     await page.evaluate((t) => window.setTime(t), i / FPS);
     const buf = await page.screenshot({ type: 'jpeg', quality: 93 });

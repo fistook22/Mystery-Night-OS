@@ -260,6 +260,16 @@ body{background:#000;font-family:var(--ui);color:#fff}
 .cta{position:absolute;bottom:150px;left:130px;right:130px;text-align:center;padding:40px 0;border-radius:90px;
   background:linear-gradient(90deg,#ffe7a8,#e8b64a);color:#1a1204;font:700 52px var(--ui);box-shadow:0 20px 70px rgba(232,182,74,.4)}
 .fine{position:absolute;bottom:80px;left:0;right:0;text-align:center;font:500 30px var(--ui);color:#7a7466}
+/* ═══ Text cards on black (video only) ═══ */
+.tcard{background:#000}
+.tc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;padding:0 80px}
+.tc .k{direction:ltr;font:700 28px var(--ui);letter-spacing:12px;color:rgba(255,217,138,.65);margin-bottom:50px}
+.tc .l1{font:700 92px/1.15 var(--ui);color:#fff;min-height:106px}
+.tc .l2{font:400 60px/1.3 var(--ui);color:rgba(255,255,255,.7);margin-top:26px;min-height:78px}
+.tc .big{font:700 118px/1.1 var(--ui);color:#fff}
+.tc .big em{font-style:normal;color:#ff3b3b;text-shadow:0 0 40px rgba(255,59,59,.6)}
+.tc .cur{display:inline-block;width:6px;height:80px;background:#ffd98a;vertical-align:-10px;margin-right:8px}
+.tc .glow{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,59,59,.18),transparent 60%);opacity:0}
 </style>
 <script src="cards.js"></script>
 </head>
@@ -410,6 +420,10 @@ frames.push(`<section class="frame grain vig" id="f8">
     <div class="chips"><span>📞 דמויות שמתקשרות ומגיבות</span><span>📱 רשת חברתית לכל חשוד</span><span>🔍 ראיות שמתגלות תוך כדי הערב</span></div></div>
   <div class="cta">הצטרפו לרשימת ההמתנה</div><div class="fine">6–10 משתתפים · בבית שלכם · קישור בביו</div>
 </section>`);
+
+// Text cards (used by the long video cut only)
+frames.push(`<section class="frame tcard grain vig" id="c0"><div class="tc"><div class="k">MYSTERY NIGHT</div><div class="l1"></div><div class="l2"></div></div></section>`);
+frames.push(`<section class="frame tcard grain vig" id="c1"><div class="tc"><div class="glow"></div><div class="big"><span class="a">מישהו בחדר הזה</span><br><em>משקר.</em></div></div></section>`);
 
 document.body.insertAdjacentHTML('beforeend', frames.join(''));
 </script>
