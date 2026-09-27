@@ -108,9 +108,9 @@
     f8(lt) {
       const ph = (sel, d, x0, y0, r0, r1) => { const k = eBack(p(lt, d, d + .5)); set($('f8', sel), `translate(${(1 - k) * x0}px,${(1 - k) * y0}px) rotate(${r0 + (r1 - r0) * k}deg)`, clamp(p(lt, d, d + .15))); };
       ph('.phone.a', 0, -260, 400, -30, -11); ph('.phone.b', .08, 0, 500, 0, 0); ph('.phone.c', .16, 260, 400, 30, 11);
-      const wm = eOut(p(lt, .35, .8)); set($('f8', '.brand .wm'), `scale(${.85 + .15 * wm})`, wm);
-      set($('f8', '.brand .sub'), null, p(lt, .6, .9));
-      const h2 = eOut(p(lt, .6, .9)); set($('f8', '.brand h2'), `translateY(${(1 - h2) * 40}px)`, h2);
+      const wm = eOut(p(lt, .35, .8)); set($('f8', '.endbrand .wm'), `scale(${.85 + .15 * wm})`, wm);
+      set($('f8', '.endbrand .sub'), null, p(lt, .6, .9));
+      const h2 = eOut(p(lt, .6, .9)); set($('f8', '.endbrand h2'), `translateY(${(1 - h2) * 40}px)`, h2);
       $$('f8', '.chips span').forEach((c, i) => { const k = eOut(p(lt, .8 + i * .12, 1.05 + i * .12)); set(c, `translateY(${(1 - k) * 30}px)`, k); });
       const ck = eBack(p(lt, 1.2, 1.5));
       set($('f8', '.cta'), `scale(${lt < 1.2 ? 0 : ck * (1 + .03 * Math.max(0, Math.sin((lt - 1.5) * 9)))})`);

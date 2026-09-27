@@ -227,7 +227,7 @@
     noctyra: { name: 'Noctyra', hp: 170, type: 'lunar', stage: 'LEGENDARY', dex: 'Moth Leviathan · Ht. 9\'2" · Wt. 3.1 t · Stained-glass wings',
       ability: { name: 'Nightglass Veil', text: 'While the moon is out, attacks against Noctyra cost one more energy.' },
       attacks: [{ cost: ['lunar', 'lunar', 'plain'], name: 'Stained Eclipse', dmg: 130, text: 'Your opponent\'s Active creature is now Dazed. It cannot retreat next turn.' }],
-      weak: 'ember', res: 'void', retreat: 2, flavor: 'Sailors swore its wings were cathedral windows drifting over the sea at night.',
+      weak: 'ember', res: 'void', retreat: 2, flavor: 'Sailors swore its wings were cathedral windows adrift at night.',
       illus: 'Illus. Mira Oshiro-Katz', num: '001/040', set: 'ILLUSTRATOR PRIZE · 1998' },
     kintsu: { name: 'Kintsu', hp: 150, type: 'ore', stage: 'MYTHIC', dex: 'Mended Colossus · Ht. 11\'0" · Wt. 7.8 t',
       ability: { name: 'Broken & Mended', text: 'The first time Kintsu would be knocked out, it survives with 10 HP.' },
