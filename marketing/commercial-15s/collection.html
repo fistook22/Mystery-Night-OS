@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Wildlore — Nightglass collection</title>
+<link rel="stylesheet" href="cards.css">
+<style>
+body{margin:0;background:radial-gradient(ellipse at 50% 0%,#23202e,#0b0a10 70%);font-family:"Liberation Sans",sans-serif;color:#eee;padding:70px 80px;width:2240px;box-sizing:border-box}
+h1{margin:0;font:700 64px "Liberation Sans";letter-spacing:10px;color:#f3dc78}
+h2{margin:10px 0 50px;font:400 28px "Liberation Sans";color:#9a96a8;letter-spacing:2px}
+.g{display:grid;grid-template-columns:repeat(3,630px);gap:60px 70px}
+figure{margin:0}figcaption{margin-top:16px;font:700 22px "Liberation Sans";color:#bdb8cc;letter-spacing:1px}
+figcaption b{color:#f3dc78}
+</style></head><body>
+<h1>WILDLORE</h1><h2>NIGHTGLASS SERIES · 1998 · fictional trading card game for "The Illustrator Heist"</h2>
+<div class="g" id="g"></div>
+<script src="cards.js"></script>
+<script>
+const notes = {noctyra:'The heist card · 1 of 40 · Illustrator Prize', kintsu:'Mythic · kintsugi porcelain colossus', tidecrown:'Abyss angler monarch',
+  mirelotl:'Six-eyed bog oracle', ossyx:'Skeletal furnace wyrm', glassmaw:'Low-poly geode wolf'};
+document.getElementById('g').innerHTML = Object.keys(WL.CARDS).map(id =>
+  `<figure>${WL.card(id,{seal:id==='noctyra'})}<figcaption><b>${WL.CARDS[id].name}</b> · ${notes[id]}</figcaption></figure>`).join('');
+</script></body></html>

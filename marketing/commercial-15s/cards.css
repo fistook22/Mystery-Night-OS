@@ -1,0 +1,62 @@
+/* WILDLORE TCG — card + grading slab components (fictional brand, original design) */
+.wl-card{--t1:#8f86d8;--t2:#2a2360;--tx:#1b1530;width:630px;height:880px;border-radius:30px;padding:20px;position:relative;
+  background:linear-gradient(135deg,#7a5a17 0%,#f3dc78 14%,#b28a2c 30%,#fff0a6 48%,#a57e27 64%,#f6e08a 82%,#80601a 100%);
+  box-shadow:0 2px 0 rgba(255,255,255,.4) inset,0 30px 60px rgba(0,0,0,.55);font-family:"Liberation Sans","DejaVu Sans",sans-serif;direction:ltr;text-align:left}
+.wl-inner{height:100%;border-radius:16px;padding:14px 18px 10px;position:relative;overflow:hidden;color:var(--tx);
+  background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.55),transparent 60%),
+             repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 3px,transparent 3px 9px),
+             linear-gradient(170deg,var(--t1),var(--t2));}
+.wl-head{display:flex;align-items:flex-end;gap:10px;height:62px}
+.wl-stage{position:absolute;top:10px;left:18px;font:700 13px/1 "Liberation Sans";letter-spacing:2px;color:rgba(0,0,0,.65);
+  background:linear-gradient(90deg,#e9e4d6,#bfb6a0);padding:4px 10px;border-radius:3px}
+.wl-name{font:700 42px/1 "Liberation Sans";letter-spacing:-.5px;margin-top:22px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.wl-hp{margin-left:auto;display:flex;align-items:center;gap:8px;font:700 18px "Liberation Sans";color:#fff;margin-bottom:4px}
+.wl-hp b{font-size:40px;letter-spacing:-1px}
+.wl-orb{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;box-shadow:0 2px 4px rgba(0,0,0,.5),inset 0 2px 3px rgba(255,255,255,.6)}
+.wl-orb svg{width:26px;height:26px}
+.wl-art{margin-top:8px;height:470px;border-radius:4px;position:relative;overflow:hidden;
+  border:7px solid;border-image:linear-gradient(135deg,#e8e8ec,#8a8a94,#f7f7fb,#77777f) 1;box-shadow:0 4px 10px rgba(0,0,0,.45)}
+.wl-art svg.art{width:100%;height:100%;display:block}
+.wl-holo{position:absolute;inset:0;mix-blend-mode:color-dodge;opacity:.22;pointer-events:none;
+  background:linear-gradient(115deg,transparent 20%,#ff5fa8 32%,#ffe066 40%,#6dffc8 48%,#6aa8ff 56%,#c07bff 64%,transparent 76%)}
+.wl-sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.18) 48%,transparent 60%)}
+.wl-sparkle{position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:screen;
+  background-image:radial-gradient(circle,#fff 0 1px,transparent 1.6px),radial-gradient(circle,#fff 0 .8px,transparent 1.4px);background-size:61px 47px,37px 53px;background-position:0 0,19px 23px}
+.wl-dex{margin:10px auto 0;width:92%;text-align:center;font:italic 700 16px "Liberation Sans";color:#3b2f10;
+  background:linear-gradient(90deg,#c9a846,#fbe9a0,#c9a846);padding:4px 0;border-radius:2px;letter-spacing:.3px}
+.wl-ability,.wl-attack{margin-top:12px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:12px;color:#fff}
+.wl-cost{display:flex;gap:4px}
+.wl-cost .wl-orb{width:30px;height:30px}.wl-cost .wl-orb svg{width:17px;height:17px}
+.wl-an{font:700 29px "Liberation Sans";text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.wl-an small{display:inline-block;font:700 12px "Liberation Sans";letter-spacing:2px;background:#c0262d;color:#fff;padding:3px 8px;border-radius:3px;margin-right:10px;vertical-align:middle}
+.wl-dmg{font:700 36px "Liberation Sans";text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.wl-txt{grid-column:1/-1;font:17px/1.35 "Liberation Sans";color:rgba(255,255,255,.92);margin-top:4px}
+.wl-rule{height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);margin:12px 0 8px}
+.wl-stats{display:flex;justify-content:space-between;font:700 13px "Liberation Sans";color:rgba(255,255,255,.85);letter-spacing:1px}
+.wl-stats span{display:flex;align-items:center;gap:6px}
+.wl-stats .wl-orb{width:22px;height:22px}.wl-stats .wl-orb svg{width:13px;height:13px}
+.wl-flavor{margin-top:10px;border:1.5px solid rgba(255,255,255,.45);border-radius:4px;padding:8px 12px;
+  font:italic 14px/1.35 "DejaVu Serif",serif;color:rgba(255,255,255,.9);background:rgba(0,0,0,.12)}
+.wl-foot{position:absolute;left:18px;right:18px;bottom:10px;display:flex;justify-content:space-between;align-items:center;font:700 12px "Liberation Sans";color:rgba(255,255,255,.85)}
+.wl-seal{position:absolute;top:92px;right:30px;width:96px;height:96px;border-radius:50%;z-index:3;display:grid;place-items:center;text-align:center;
+  background:radial-gradient(circle at 35% 30%,#fff7c4,#e0b640 45%,#8d6512 100%);box-shadow:0 4px 10px rgba(0,0,0,.5),inset 0 0 0 4px rgba(255,255,255,.35);
+  font:700 11px/1.2 "Liberation Sans";letter-spacing:1px;color:#3b2604}
+.wl-seal svg{width:30px;height:30px;display:block;margin:0 auto 2px}
+
+/* SlabCert holder — clear acrylic case with red/white label */
+.slab{width:700px;height:1150px;border-radius:30px;position:relative;padding:26px 35px;direction:ltr;
+  background:linear-gradient(115deg,rgba(255,255,255,.34),rgba(255,255,255,.10) 30%,rgba(255,255,255,.04) 60%,rgba(255,255,255,.22));
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.55),inset 0 0 0 16px rgba(255,255,255,.06),inset 0 0 0 19px rgba(255,255,255,.25),0 40px 80px rgba(0,0,0,.7)}
+.slab::after{content:"";position:absolute;top:0;left:90px;width:130px;height:100%;border-radius:30px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-10deg)}
+.slab-label{height:150px;border-radius:8px;background:#fbfaf6;border:5px solid #c8102e;display:flex;align-items:stretch;overflow:hidden;
+  font-family:"Liberation Sans";color:#111;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.slab-label .l{flex:1;padding:12px 14px;font:700 19px/1.3 "Liberation Sans";letter-spacing:.3px}
+.slab-label .l i{font-style:normal;color:#c8102e}
+.slab-label .bc{height:22px;margin-top:6px;width:230px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px,#111 8px 11px,transparent 11px 12px)}
+.slab-label .r{width:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-left:2px dashed #ddd}
+.slab-label .r small{font:700 18px "Liberation Sans";letter-spacing:1px}
+.slab-label .r b{font:700 76px/0.95 "Liberation Sans";color:#c8102e}
+.slab-label .brand{font:900 17px "Liberation Sans";letter-spacing:3px;color:#c8102e}
+.slab-well{margin-top:26px;display:grid;place-items:center}
+.slab-well .wl-card{box-shadow:0 0 0 2px rgba(255,255,255,.2),0 10px 30px rgba(0,0,0,.4)}

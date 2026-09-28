@@ -1,0 +1,17 @@
+{
+  "name": "mystery-night-os",
+  "version": "0.1.0",
+  "description": "Live AI-orchestrated mystery dinner experience platform",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon --exec ts-node src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

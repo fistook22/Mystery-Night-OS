@@ -1,0 +1,7 @@
+legacy/
+marketing/
+node_modules/
+dist/
+package-lock.json
+docs/
+*.md
