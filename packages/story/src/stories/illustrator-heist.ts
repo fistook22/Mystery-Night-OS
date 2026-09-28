@@ -293,6 +293,7 @@ export const illustratorHeist = {
       audience: 'all',
       pointsTo: ['noa'],
       hint: 'בצילום של הקלף המזויף יש מספר תעודה. נסו אותו בכלי {grader}.',
+      hintFromMin: 42,
     },
     {
       id: 'stream_frame',
@@ -329,6 +330,7 @@ export const illustratorHeist = {
       audience: 'all',
       pointsTo: ['noa', 'eitan'],
       hint: 'סטוריז לא באמת נמחקים. חפשו מדבקת QR בבית.',
+      hintFromMin: 60,
     },
     {
       id: 'security_log',
@@ -363,6 +365,7 @@ export const illustratorHeist = {
       audience: 'all',
       pointsTo: ['eitan'],
       hint: 'יש שמאית ביטוח באנשי הקשר. תשאלו אותה על הפוליסה.',
+      hintFromMin: 50,
     },
     {
       id: 'gal_dm',
@@ -375,6 +378,7 @@ export const illustratorHeist = {
       audience: 'all',
       pointsTo: ['gal'],
       hint: 'מישהו כאן חייב כסף. יש מדבקת QR נוספת בבית.',
+      hintFromMin: 75,
     },
     {
       id: 'avner_testimony',
@@ -391,6 +395,7 @@ export const illustratorHeist = {
       audience: 'all',
       pointsTo: ['gal'],
       hint: 'אבנר מיפו יודע מי שאל על הקלף הבוקר. תתעקשו.',
+      hintFromMin: 50,
     },
     {
       id: 'eitan_noa_dm',

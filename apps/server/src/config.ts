@@ -12,8 +12,8 @@ const Config = z.object({
   PUBLIC_URL: z.string().url().default('http://localhost:5173'),
   DATABASE_PATH: z.string().default('data/mystery-night.db'),
   ANTHROPIC_API_KEY: z.string().optional(),
-  ANTHROPIC_MODEL: z.string().default('claude-sonnet-5'),
-  ANTHROPIC_FAST_MODEL: z.string().default('claude-haiku-4-5-20251001'),
+  ANTHROPIC_MODEL: z.string().default('claude-opus-5'),
+  ANTHROPIC_FAST_MODEL: z.string().default('claude-haiku-4-5'),
   NLPEARL_API_KEY: z.string().optional(),
 });
 

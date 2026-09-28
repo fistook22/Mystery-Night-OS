@@ -93,6 +93,8 @@ export const Clue = z.object({
   pointsTo: z.array(Id).default([]),
   /** Short nudge the host or game master can send if the table is stuck on this clue. */
   hint: z.string().optional(),
+  /** Earliest game minute at which the hint makes sense (e.g. after the fake is discovered). */
+  hintFromMin: z.number().min(0).default(0),
 });
 export type Clue = z.infer<typeof Clue>;
 

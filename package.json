@@ -18,7 +18,8 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "test": "vitest run",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "sim": "npm run sim -w @mn/server --"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
