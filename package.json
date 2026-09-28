@@ -1,17 +1,34 @@
 {
   "name": "mystery-night-os",
-  "version": "0.1.0",
-  "description": "Live AI-orchestrated mystery dinner experience platform",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Live AI-orchestrated mystery party platform",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon --exec ts-node src/server.ts"
+    "dev": "concurrently -k -n server,web -c blue,magenta \"npm run dev -w @mn/server\" \"npm run dev -w @mn/web\"",
+    "build": "npm run build -w @mn/web",
+    "start": "npm run start -w @mn/server",
+    "typecheck": "tsc -b",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "format": "prettier --write ."
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.4.5"
-  },
-  "engines": {
-    "node": ">=18"
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.20.4",
+    "concurrently": "^9.2.4",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.9.9",
+    "typescript": "~5.7.0",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^3.2.7"
   }
 }

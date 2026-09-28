@@ -1,0 +1,43 @@
+:root {
+  --ink: #07070b;
+  --panel: #12131a;
+  --line: #262a38;
+  --text: #f3efe6;
+  --muted: #8d91a0;
+  --gold: #e8b64a;
+  --gold-2: #ffd98a;
+  --red: #ff3b30;
+  --font: 'Heebo Variable', 'Heebo', system-ui, sans-serif;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+.splash {
+  min-height: 100%;
+  display: grid;
+  place-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+}
+.wordmark {
+  direction: ltr;
+  font-weight: 800;
+  letter-spacing: 6px;
+  font-size: 32px;
+  color: var(--gold-2);
+}
