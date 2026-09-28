@@ -19,6 +19,7 @@ export interface SimReport {
   culpritsNamedBy: number;
   log: string[];
   leaks: string[];
+  notifications: string[];
 }
 
 export async function simulateParty(opts: { players?: number; verbose?: boolean } = {}): Promise<SimReport> {
@@ -133,6 +134,7 @@ export async function simulateParty(opts: { players?: number; verbose?: boolean 
       culpritsNamedBy: final.finale?.results.filter((r) => r.correct === r.of).length ?? 0,
       log,
       leaks,
+      notifications: final.notifications.map((n) => n.text),
     };
   } finally {
     await app.close();

@@ -1,6 +1,19 @@
 # Mystery Night OS — V1 Development Plan
 
-_Status: draft · 2026-09-28 · companion to [product-plan.md](product-plan.md)_
+_Status: in progress · 2026-09-28 · companion to [product-plan.md](product-plan.md)_
+
+## Progress
+
+| Phase | Status |
+|---|---|
+| 0 Foundations | ✅ Monorepo, Fastify, React/Vite, tests, lint, CI (no Fly.io deploy yet) |
+| 1 Story engine & state | ✅ Story schema + Heist content, SQLite, engine, API, SSE, simulator (`npm run sim`) |
+| 2 Guest web app | ✅ First playable version: file, evidence, Pixelgram/Streamly/Huddle, AI contacts (text), tools, QR, vote, finale. Push notifications pending |
+| 3 TV & host | ✅ TV scenes, host console, printable QR stickers |
+| 4 AI game master | ⏳ NPC text chat done; game master and eval suite pending |
+| 5 Voice (NLPearl) | ⏳ Needs NLPearl API key |
+
+Changes from the original plan: raw `better-sqlite3` instead of Drizzle (simpler for one server); Claude default model is `claude-opus-5` (configurable via `ANTHROPIC_MODEL`).
 
 **Goal:** a playable, paid-ready V1 of *The Illustrator Heist* for private parties: a guest web app, TV screen, host console, Claude-driven game master and text characters, and NLPearl voice. It must survive 3 real playtests before launch.
 

@@ -304,5 +304,11 @@ export function hostView(game: Game, sessionId: string, links: Links): HostView 
         ? finaleView(c, c.story, guests, accusations)
         : null,
     notifications: notifications(game, sessionId, 20),
+    stickers: [...new Set(c.story.clues.flatMap((k) => (k.unlock.type === 'qr' ? [k.unlock.code] : [])))].map(
+      (code, i) => ({
+        label: `מדבקה ${i + 1}`,
+        url: `${links.base}/qr/${encodeURIComponent(code)}`,
+      }),
+    ),
   });
 }

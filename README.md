@@ -25,6 +25,15 @@ npm run dev              # server on :3000, web app on :5173
 | `npm run lint` | ESLint |
 | `npm run build` | Production build of the web app (served by the server) |
 | `npm start` | Run the server (serves `apps/web/dist` if built) |
+| `npm run sim` | Play a whole party headless with bots and a fake clock |
+| `node scripts/e2e-party.mjs` | Play a party in a real browser (host, TV, phone) with screenshots |
+
+## Play a test party
+
+1. `npm run build && npm start`, then open http://localhost:3000 and press "צרו ערב חדש".
+2. The host console shows the invite link/QR. Open it on 6+ phones (or browser tabs), and open the TV link on a big screen.
+3. Press "התחלת הערב". The story runs on its own clock (about 150 minutes); the host can pause, hint and skip.
+4. Without `ANTHROPIC_API_KEY`, characters answer with scripted replies; with a key they are played by Claude.
 
 ## Layout
 

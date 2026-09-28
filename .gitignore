@@ -9,3 +9,4 @@ data/
 .DS_Store
 coverage/
 dist-types/
+e2e-shots/

@@ -1,19 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useRoute } from './lib/router';
+import { Home } from './pages/Home';
+import { Join } from './pages/Join';
+import { Guest } from './pages/Guest';
+import { Tv } from './pages/Tv';
+import { Host } from './pages/Host';
+import { Print } from './pages/Print';
+import { QrLanding } from './pages/QrLanding';
+import { ErrorScreen } from './components/ui';
 
-/** Minimal path router: /g/:token (guest), /tv/:token, /host/:token, /join/:code. */
 export function App() {
-  const [health, setHealth] = useState<string>('…');
-  useEffect(() => {
-    fetch('/api/health')
-      .then((r) => r.json())
-      .then((d: { ok: boolean }) => setHealth(d.ok ? 'השרת מחובר' : 'שגיאה'))
-      .catch(() => setHealth('השרת לא זמין'));
-  }, []);
-
-  return (
-    <main className="splash">
-      <div className="wordmark">MYSTERY NIGHT</div>
-      <p>{health}</p>
-    </main>
-  );
+  const r = useRoute();
+  switch (r.page) {
+    case 'home':
+      return <Home />;
+    case 'join':
+      return <Join code={r.code} />;
+    case 'guest':
+      return <Guest token={r.token} />;
+    case 'tv':
+      return <Tv token={r.token} />;
+    case 'host':
+      return <Host token={r.token} />;
+    case 'print':
+      return <Print token={r.token} />;
+    case 'qr':
+      return <QrLanding code={r.code} />;
+    default:
+      return <ErrorScreen message="הדף לא נמצא." />;
+  }
 }

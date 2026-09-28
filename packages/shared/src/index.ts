@@ -144,6 +144,8 @@ export interface HostView {
   votes: { cast: number; of: number };
   finale: FinaleView | null;
   notifications: Notification[];
+  /** Printable QR stickers to hide around the house (labels carry no spoilers). */
+  stickers: { label: string; url: string }[];
 }
 
 export type View = GuestView | TvView | HostView;

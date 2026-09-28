@@ -1,4 +1,4 @@
-import { getStory, type Beat, type Story, type UnlockRule } from '@mn/story';
+import { applySkin, getStory, type Beat, type Story, type UnlockRule } from '@mn/story';
 import type { GuestRow, Repo, SessionRow, UnlockRow } from '../db/repo.js';
 
 export type Now = () => number;
@@ -398,7 +398,9 @@ export class Game {
 
   // ── Helpers ──────────────────────────────────────────────────────────────
 
-  private notify(sessionId: string, text: string, push = true): void {
+  private notify(sessionId: string, raw: string, push = true): void {
+    const s = this.repo.session(sessionId);
+    const text = s ? applySkin(raw, this.story(s).skins[s.skin] ?? {}) : raw;
     this.repo.event(sessionId, 'notify', { text }, this.now());
     this.out.notify(sessionId, text);
     if (push) this.out.changed(sessionId);

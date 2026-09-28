@@ -13,3 +13,11 @@ describe('full party simulation', () => {
     expect(r.log.join('\n')).toContain('the game clock reads 80 min');
   });
 });
+
+describe('notifications', () => {
+  it('fill brand placeholders before they reach phones', async () => {
+    const r = await simulateParty({ players: 6 });
+    expect(r.notifications.some((n) => n.includes('Huddle'))).toBe(true);
+    expect(r.notifications.join('\n')).not.toMatch(/\{[a-zA-Z]+\}/);
+  });
+});
